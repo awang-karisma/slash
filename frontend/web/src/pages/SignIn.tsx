@@ -13,6 +13,9 @@ import { IdentityProvider, IdentityProvider_Type } from "@/types/proto/api/v1/wo
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
+  const forceSSO = workspaceStore.setting.forceSso;
+  const identityProviders = workspaceStore.setting.identityProviders;
+  const hasIdentityProviders = identityProviders.length > 0;
 
   const handleSignInWithIdentityProvider = async (identityProvider: IdentityProvider) => {
     const stateQueryParameter = identityProvider.id;
@@ -31,6 +34,36 @@ const SignIn: React.FC = () => {
       window.location.href = authUrl;
     }
   };
+
+  // When SSO is forced and there are identity providers, only show SSO buttons
+  if (forceSSO && hasIdentityProviders) {
+    return (
+      <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-background">
+        <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
+          <div className="w-full py-4 grow flex flex-col justify-center items-center">
+            <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
+              <Logo className="mr-2" />
+              <span className="text-3xl text-foreground opacity-80">Slash</span>
+            </div>
+            <p className="w-full text-2xl mt-2 text-muted-foreground">Sign in with SSO</p>
+            <div className="w-full flex flex-col space-y-2 mt-4">
+              {identityProviders.map((identityProvider) => (
+                <Button
+                  key={identityProvider.id}
+                  variant="outline"
+                  className="w-full"
+                  size="default"
+                  onClick={() => handleSignInWithIdentityProvider(identityProvider)}
+                >
+                  {t("auth.sign-in-with", { provider: identityProvider.title })}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-background">
@@ -53,7 +86,7 @@ const SignIn: React.FC = () => {
               </Link>
             </p>
           )}
-          {workspaceStore.setting.identityProviders.length > 0 && (
+          {hasIdentityProviders && (
             <>
               <div className="w-full flex items-center my-4">
                 <Separator className="flex-1" />
@@ -61,7 +94,7 @@ const SignIn: React.FC = () => {
                 <Separator className="flex-1" />
               </div>
               <div className="w-full flex flex-col space-y-2">
-                {workspaceStore.setting.identityProviders.map((identityProvider) => (
+                {identityProviders.map((identityProvider) => (
                   <Button
                     key={identityProvider.id}
                     variant="outline"

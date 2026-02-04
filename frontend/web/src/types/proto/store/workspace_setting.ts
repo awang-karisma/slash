@@ -109,6 +109,7 @@ export interface WorkspaceSetting_GeneralSetting {
 export interface WorkspaceSetting_SecuritySetting {
   disallowUserRegistration: boolean;
   disallowPasswordAuth: boolean;
+  forceSso: boolean;
 }
 
 export interface WorkspaceSetting_ShortcutRelatedSetting {
@@ -323,7 +324,7 @@ export const WorkspaceSetting_GeneralSetting: MessageFns<WorkspaceSetting_Genera
 };
 
 function createBaseWorkspaceSetting_SecuritySetting(): WorkspaceSetting_SecuritySetting {
-  return { disallowUserRegistration: false, disallowPasswordAuth: false };
+  return { disallowUserRegistration: false, disallowPasswordAuth: false, forceSso: false };
 }
 
 export const WorkspaceSetting_SecuritySetting: MessageFns<WorkspaceSetting_SecuritySetting> = {
@@ -333,6 +334,9 @@ export const WorkspaceSetting_SecuritySetting: MessageFns<WorkspaceSetting_Secur
     }
     if (message.disallowPasswordAuth !== false) {
       writer.uint32(16).bool(message.disallowPasswordAuth);
+    }
+    if (message.forceSso !== false) {
+      writer.uint32(24).bool(message.forceSso);
     }
     return writer;
   },
@@ -360,6 +364,14 @@ export const WorkspaceSetting_SecuritySetting: MessageFns<WorkspaceSetting_Secur
           message.disallowPasswordAuth = reader.bool();
           continue;
         }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.forceSso = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -376,6 +388,7 @@ export const WorkspaceSetting_SecuritySetting: MessageFns<WorkspaceSetting_Secur
     const message = createBaseWorkspaceSetting_SecuritySetting();
     message.disallowUserRegistration = object.disallowUserRegistration ?? false;
     message.disallowPasswordAuth = object.disallowPasswordAuth ?? false;
+    message.forceSso = object.forceSso ?? false;
     return message;
   },
 };

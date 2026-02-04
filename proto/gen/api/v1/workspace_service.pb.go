@@ -165,8 +165,10 @@ type WorkspaceSetting struct {
 	DisallowUserRegistration bool `protobuf:"varint,6,opt,name=disallow_user_registration,json=disallowUserRegistration,proto3" json:"disallow_user_registration,omitempty"`
 	// Whether to disallow password authentication.
 	DisallowPasswordAuth bool `protobuf:"varint,7,opt,name=disallow_password_auth,json=disallowPasswordAuth,proto3" json:"disallow_password_auth,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	// Whether to force SSO authentication.
+	ForceSso      bool `protobuf:"varint,8,opt,name=force_sso,json=forceSso,proto3" json:"force_sso,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *WorkspaceSetting) Reset() {
@@ -237,6 +239,13 @@ func (x *WorkspaceSetting) GetDisallowUserRegistration() bool {
 func (x *WorkspaceSetting) GetDisallowPasswordAuth() bool {
 	if x != nil {
 		return x.DisallowPasswordAuth
+	}
+	return false
+}
+
+func (x *WorkspaceSetting) GetForceSso() bool {
+	if x != nil {
+		return x.ForceSso
 	}
 	return false
 }
@@ -656,14 +665,15 @@ const file_api_v1_workspace_service_proto_rawDesc = "" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x14\n" +
 	"\x05owner\x18\x03 \x01(\tR\x05owner\x12>\n" +
 	"\fsubscription\x18\x04 \x01(\v2\x1a.slash.api.v1.SubscriptionR\fsubscription\x12\x1a\n" +
-	"\bbranding\x18\x06 \x01(\fR\bbranding\"\xdd\x02\n" +
+	"\bbranding\x18\x06 \x01(\fR\bbranding\"\xfa\x02\n" +
 	"\x10WorkspaceSetting\x12!\n" +
 	"\finstance_url\x18\x01 \x01(\tR\vinstanceUrl\x12\x1a\n" +
 	"\bbranding\x18\x02 \x01(\fR\bbranding\x12G\n" +
 	"\x12default_visibility\x18\x04 \x01(\x0e2\x18.slash.api.v1.VisibilityR\x11defaultVisibility\x12M\n" +
 	"\x12identity_providers\x18\x05 \x03(\v2\x1e.slash.api.v1.IdentityProviderR\x11identityProviders\x12<\n" +
 	"\x1adisallow_user_registration\x18\x06 \x01(\bR\x18disallowUserRegistration\x124\n" +
-	"\x16disallow_password_auth\x18\a \x01(\bR\x14disallowPasswordAuth\"\xd9\x01\n" +
+	"\x16disallow_password_auth\x18\a \x01(\bR\x14disallowPasswordAuth\x12\x1b\n" +
+	"\tforce_sso\x18\b \x01(\bR\bforceSso\"\xd9\x01\n" +
 	"\x10IdentityProvider\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x127\n" +

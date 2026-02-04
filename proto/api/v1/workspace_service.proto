@@ -53,6 +53,8 @@ message WorkspaceSetting {
   bool disallow_user_registration = 6;
   // Whether to disallow password authentication.
   bool disallow_password_auth = 7;
+  // Whether to force SSO authentication.
+  bool force_sso = 8;
 }
 
 message IdentityProvider {

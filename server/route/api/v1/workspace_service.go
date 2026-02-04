@@ -58,6 +58,7 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			securitySetting := v.GetSecurity()
 			workspaceSetting.DisallowUserRegistration = securitySetting.GetDisallowUserRegistration()
 			workspaceSetting.DisallowPasswordAuth = securitySetting.GetDisallowPasswordAuth()
+			workspaceSetting.ForceSso = securitySetting.GetForceSso()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()
 			workspaceSetting.DefaultVisibility = convertVisibilityFromStorepb(shortcutRelatedSetting.GetDefaultVisibility())
@@ -156,6 +157,20 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
 			}
 			securitySetting.DisallowPasswordAuth = request.Setting.DisallowPasswordAuth
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
+				Value: &storepb.WorkspaceSetting_Security{
+					Security: securitySetting,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "force_sso" {
+			securitySetting, err := s.Store.GetWorkspaceSecuritySetting(ctx)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+			}
+			securitySetting.ForceSso = request.Setting.ForceSso
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
 				Value: &storepb.WorkspaceSetting_Security{

@@ -295,6 +295,7 @@ type WorkspaceSetting_SecuritySetting struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
 	DisallowUserRegistration bool                   `protobuf:"varint,1,opt,name=disallow_user_registration,json=disallowUserRegistration,proto3" json:"disallow_user_registration,omitempty"`
 	DisallowPasswordAuth     bool                   `protobuf:"varint,2,opt,name=disallow_password_auth,json=disallowPasswordAuth,proto3" json:"disallow_password_auth,omitempty"`
+	ForceSso                 bool                   `protobuf:"varint,3,opt,name=force_sso,json=forceSso,proto3" json:"force_sso,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -339,6 +340,13 @@ func (x *WorkspaceSetting_SecuritySetting) GetDisallowUserRegistration() bool {
 func (x *WorkspaceSetting_SecuritySetting) GetDisallowPasswordAuth() bool {
 	if x != nil {
 		return x.DisallowPasswordAuth
+	}
+	return false
+}
+
+func (x *WorkspaceSetting_SecuritySetting) GetForceSso() bool {
+	if x != nil {
+		return x.ForceSso
 	}
 	return false
 }
@@ -435,7 +443,7 @@ var File_store_workspace_setting_proto protoreflect.FileDescriptor
 
 const file_store_workspace_setting_proto_rawDesc = "" +
 	"\n" +
-	"\x1dstore/workspace_setting.proto\x12\vslash.store\x1a\x12store/common.proto\x1a\x0fstore/idp.proto\"\xae\a\n" +
+	"\x1dstore/workspace_setting.proto\x12\vslash.store\x1a\x12store/common.proto\x1a\x0fstore/idp.proto\"\xcb\a\n" +
 	"\x10WorkspaceSetting\x122\n" +
 	"\x03key\x18\x01 \x01(\x0e2 .slash.store.WorkspaceSettingKeyR\x03key\x12\x10\n" +
 	"\x03raw\x18\x02 \x01(\tR\x03raw\x12H\n" +
@@ -448,10 +456,11 @@ const file_store_workspace_setting_proto_rawDesc = "" +
 	"\vlicense_key\x18\x02 \x01(\tR\n" +
 	"licenseKey\x12!\n" +
 	"\finstance_url\x18\x03 \x01(\tR\vinstanceUrl\x12\x1a\n" +
-	"\bbranding\x18\x04 \x01(\fR\bbranding\x1a\x85\x01\n" +
+	"\bbranding\x18\x04 \x01(\fR\bbranding\x1a\xa2\x01\n" +
 	"\x0fSecuritySetting\x12<\n" +
 	"\x1adisallow_user_registration\x18\x01 \x01(\bR\x18disallowUserRegistration\x124\n" +
-	"\x16disallow_password_auth\x18\x02 \x01(\bR\x14disallowPasswordAuth\x1a`\n" +
+	"\x16disallow_password_auth\x18\x02 \x01(\bR\x14disallowPasswordAuth\x12\x1b\n" +
+	"\tforce_sso\x18\x03 \x01(\bR\bforceSso\x1a`\n" +
 	"\x16ShortcutRelatedSetting\x12F\n" +
 	"\x12default_visibility\x18\x01 \x01(\x0e2\x17.slash.store.VisibilityR\x11defaultVisibility\x1ag\n" +
 	"\x17IdentityProviderSetting\x12L\n" +

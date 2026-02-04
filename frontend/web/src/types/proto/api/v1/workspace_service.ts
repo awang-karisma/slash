@@ -43,6 +43,8 @@ export interface WorkspaceSetting {
   disallowUserRegistration: boolean;
   /** Whether to disallow password authentication. */
   disallowPasswordAuth: boolean;
+  /** Whether to force SSO authentication. */
+  forceSso: boolean;
 }
 
 export interface IdentityProvider {
@@ -224,6 +226,7 @@ function createBaseWorkspaceSetting(): WorkspaceSetting {
     identityProviders: [],
     disallowUserRegistration: false,
     disallowPasswordAuth: false,
+    forceSso: false,
   };
 }
 
@@ -246,6 +249,9 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
     }
     if (message.disallowPasswordAuth !== false) {
       writer.uint32(56).bool(message.disallowPasswordAuth);
+    }
+    if (message.forceSso !== false) {
+      writer.uint32(64).bool(message.forceSso);
     }
     return writer;
   },
@@ -305,6 +311,14 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
           message.disallowPasswordAuth = reader.bool();
           continue;
         }
+        case 8: {
+          if (tag !== 64) {
+            break;
+          }
+
+          message.forceSso = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -325,6 +339,7 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
     message.identityProviders = object.identityProviders?.map((e) => IdentityProvider.fromPartial(e)) || [];
     message.disallowUserRegistration = object.disallowUserRegistration ?? false;
     message.disallowPasswordAuth = object.disallowPasswordAuth ?? false;
+    message.forceSso = object.forceSso ?? false;
     return message;
   },
 };

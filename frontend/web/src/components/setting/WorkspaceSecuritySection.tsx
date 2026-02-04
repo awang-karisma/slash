@@ -43,6 +43,22 @@ const WorkspaceSecuritySection = () => {
     );
   };
 
+  const toggleForceSSO = async (on: boolean) => {
+    if (on) {
+      const confirmed = window.confirm("Are you sure to force SSO authentication? This will prevent users from signing in with password unless SSO is not configured.");
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    await updateWorkspaceSetting(
+      WorkspaceSetting.fromPartial({
+        forceSso: on,
+      }),
+      ["force_sso"],
+    );
+  };
+
   const updateWorkspaceSetting = async (workspaceSetting: WorkspaceSetting, updateMask: string[]) => {
     if (updateMask.length === 0) {
       toast.error("No changes made");
@@ -84,6 +100,16 @@ const WorkspaceSecuritySection = () => {
           />
           <Label htmlFor="disallow-password-auth" className="text-foreground">
             {"Disallow password auth"}
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="force-sso"
+            checked={workspaceStore.setting.forceSso}
+            onCheckedChange={toggleForceSSO}
+          />
+          <Label htmlFor="force-sso" className="text-foreground">
+            {"Force SSO authentication"}
           </Label>
         </div>
       </div>
