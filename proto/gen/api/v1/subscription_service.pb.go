@@ -287,18 +287,18 @@ var File_api_v1_subscription_service_proto protoreflect.FileDescriptor
 
 const file_api_v1_subscription_service_proto_rawDesc = "" +
 	"\n" +
-	"!api/v1/subscription_service.proto\x12\fslash.api.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\x02\n" +
-	"\fSubscription\x12/\n" +
-	"\x04plan\x18\x01 \x01(\x0e2\x16.slash.api.v1.PlanTypeB\x03\xe0A\x03R\x04plan\x12B\n" +
-	"\fstarted_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x03\xe0A\x03R\vstartedTime\x12B\n" +
-	"\fexpires_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x03\xe0A\x03R\vexpiresTime\x12\x1f\n" +
-	"\bfeatures\x18\x04 \x03(\tB\x03\xe0A\x03R\bfeatures\x12\x19\n" +
-	"\x05seats\x18\x05 \x01(\x05B\x03\xe0A\x03R\x05seats\x12,\n" +
-	"\x0fshortcuts_limit\x18\x06 \x01(\x05B\x03\xe0A\x03R\x0eshortcutsLimit\x120\n" +
-	"\x11collections_limit\x18\a \x01(\x05B\x03\xe0A\x03R\x10collectionsLimit\"\x18\n" +
-	"\x16GetSubscriptionRequest\"A\n" +
-	"\x19UpdateSubscriptionRequest\x12$\n" +
-	"\vlicense_key\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
+	"!api/v1/subscription_service.proto\x12\fslash.api.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xea\x02\n" +
+	"\fSubscription\x120\n" +
+	"\x04plan\x18\x01 \x01(\x0e2\x16.slash.api.v1.PlanTypeB\x04\xe2A\x01\x03R\x04plan\x12C\n" +
+	"\fstarted_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\vstartedTime\x12C\n" +
+	"\fexpires_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\vexpiresTime\x12 \n" +
+	"\bfeatures\x18\x04 \x03(\tB\x04\xe2A\x01\x03R\bfeatures\x12\x1a\n" +
+	"\x05seats\x18\x05 \x01(\x05B\x04\xe2A\x01\x03R\x05seats\x12-\n" +
+	"\x0fshortcuts_limit\x18\x06 \x01(\x05B\x04\xe2A\x01\x03R\x0eshortcutsLimit\x121\n" +
+	"\x11collections_limit\x18\a \x01(\x05B\x04\xe2A\x01\x03R\x10collectionsLimit\"\x18\n" +
+	"\x16GetSubscriptionRequest\"B\n" +
+	"\x19UpdateSubscriptionRequest\x12%\n" +
+	"\vlicense_key\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\n" +
 	"licenseKey\"\x1b\n" +
 	"\x19DeleteSubscriptionRequest*H\n" +
 	"\bPlanType\x12\x19\n" +

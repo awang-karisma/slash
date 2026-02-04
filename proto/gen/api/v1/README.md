@@ -1224,6 +1224,7 @@
 | identity_providers | [IdentityProvider](#slash-api-v1-IdentityProvider) | repeated | The identity providers. |
 | disallow_user_registration | [bool](#bool) |  | Whether to disallow user registration by email&amp;password. |
 | disallow_password_auth | [bool](#bool) |  | Whether to disallow password authentication. |
+| force_sso | [bool](#bool) |  | Whether to force SSO authentication. |
 
 
 
