@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/internal/slashutil"
 	"github.com/yourselfhosted/slash/plugin/idp"
 	"github.com/yourselfhosted/slash/plugin/idp/oauth2"
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
@@ -141,7 +141,7 @@ func (s *APIV1Service) handleSSOLogin(ctx context.Context, request *v1pb.SignInW
 // handleUserLogin handles the user login process after obtaining user info from the identity provider.
 func (s *APIV1Service) handleUserLogin(ctx context.Context, userInfo *idp.IdentityProviderUserInfo) (*v1pb.User, error) {
 	email := userInfo.Identifier
-	if !util.ValidateEmail(email) {
+	if !slashutil.ValidateEmail(email) {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid email address")
 	}
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
@@ -157,7 +157,7 @@ func (s *APIV1Service) handleUserLogin(ctx context.Context, userInfo *idp.Identi
 			// The new signup user should be normal user by default.
 			Role: store.RoleUser,
 		}
-		password, err := util.RandomString(20)
+		password, err := slashutil.RandomString(20)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to generate random password, err: %s", err)
 		}

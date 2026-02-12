@@ -16,7 +16,7 @@ import (
 	"github.com/pkg/errors"
 
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/common"
+	"github.com/yourselfhosted/slash/server/version"
 )
 
 //go:embed migration
@@ -55,14 +55,14 @@ func (s *Store) Migrate(ctx context.Context) error {
 		for _, migrationHistory := range migrationHistoryList {
 			migrationHistoryVersions = append(migrationHistoryVersions, migrationHistory.Version)
 		}
-		sort.Sort(common.SortVersion(migrationHistoryVersions))
+		sort.Sort(version.SortVersion(migrationHistoryVersions))
 		latestMigrationHistoryVersion := migrationHistoryVersions[len(migrationHistoryVersions)-1]
 		schemaVersion, err := s.GetCurrentSchemaVersion()
 		if err != nil {
 			return errors.Wrap(err, "failed to get current schema version")
 		}
 
-		if common.IsVersionGreaterThan(schemaVersion, latestMigrationHistoryVersion) {
+		if version.IsVersionGreaterThan(schemaVersion, latestMigrationHistoryVersion) {
 			filePaths, err := fs.Glob(migrationFS, fmt.Sprintf("%s*/*.sql", s.getMigrationBasePath()))
 			if err != nil {
 				return errors.Wrap(err, "failed to read migration files")
@@ -78,7 +78,7 @@ func (s *Store) Migrate(ctx context.Context) error {
 					if err != nil {
 						return errors.Wrapf(err, "failed to get schema version of migrate script for file: %s", filePath)
 					}
-					if common.IsVersionGreaterThan(fileSchemaVersion, latestMigrationHistoryVersion) && common.IsVersionGreaterOrEqualThan(schemaVersion, fileSchemaVersion) {
+					if version.IsVersionGreaterThan(fileSchemaVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(schemaVersion, fileSchemaVersion) {
 						bytes, err := migrationFS.ReadFile(filePath)
 						if err != nil {
 							return errors.Wrapf(err, "failed to read migration file: %s", filePath)
@@ -182,8 +182,8 @@ func (s *Store) validateMigrationSetup() error {
 }
 
 func (s *Store) GetCurrentSchemaVersion() (string, error) {
-	currentVersion := common.GetCurrentVersion(s.profile.Mode)
-	minorVersion := common.GetMinorVersion(currentVersion)
+	currentVersion := version.GetCurrentVersion(s.profile.Mode)
+	minorVersion := version.GetMinorVersion(currentVersion)
 	filePaths, err := fs.Glob(migrationFS, fmt.Sprintf("%s%s/*.sql", s.getMigrationBasePath(), minorVersion))
 	if err != nil {
 		return "", errors.Wrap(err, "failed to read migration files")
@@ -278,11 +278,11 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 	for _, migrationHistory := range migrationHistoryList {
 		versions = append(versions, migrationHistory.Version)
 	}
-	sort.Sort(common.SortVersion(versions))
+	sort.Sort(version.SortVersion(versions))
 	latestVersion := versions[len(versions)-1]
-	latestMinorVersion := common.GetMinorVersion(latestVersion)
+	latestMinorVersion := version.GetMinorVersion(latestVersion)
 	// If the latest version is greater than or equal to 1.0, the migration history is already normalized.
-	if common.IsVersionGreaterOrEqualThan(latestMinorVersion, "1.0") {
+	if version.IsVersionGreaterOrEqualThan(latestMinorVersion, "1.0") {
 		return nil
 	}
 
@@ -297,19 +297,19 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 		if err != nil {
 			return errors.Wrap(err, "failed to get schema version of migrate script")
 		}
-		schemaVersionMap[common.GetMinorVersion(fileSchemaVersion)] = fileSchemaVersion
+		schemaVersionMap[version.GetMinorVersion(fileSchemaVersion)] = fileSchemaVersion
 	}
 	// Add the current schema version to the map.
 	currentSchemaVersion, err := s.GetCurrentSchemaVersion()
 	if err != nil {
 		return errors.Wrap(err, "failed to get current schema version")
 	}
-	schemaVersionMap[common.GetMinorVersion(currentSchemaVersion)] = currentSchemaVersion
+	schemaVersionMap[version.GetMinorVersion(currentSchemaVersion)] = currentSchemaVersion
 	latestSchemaVersion := schemaVersionMap[latestMinorVersion]
 	if latestSchemaVersion == "" {
 		return errors.Errorf("latest schema version not found")
 	}
-	if common.IsVersionGreaterOrEqualThan(latestVersion, latestSchemaVersion) {
+	if version.IsVersionGreaterOrEqualThan(latestVersion, latestSchemaVersion) {
 		return nil
 	}
 

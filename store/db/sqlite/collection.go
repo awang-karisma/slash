@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/internal/slashutil"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -85,7 +85,7 @@ func (d *DB) UpdateCollection(ctx context.Context, update *store.UpdateCollectio
 	collection.ShortcutIds = []int32{}
 	if shortcutIDs != "" {
 		for _, idStr := range strings.Split(shortcutIDs, ",") {
-			shortcutID, err := util.ConvertStringToInt32(idStr)
+			shortcutID, err := slashutil.ConvertStringToInt32(idStr)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to convert shortcut id")
 			}
@@ -158,7 +158,7 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 		collection.ShortcutIds = []int32{}
 		if shortcutIDs != "" {
 			for _, idStr := range strings.Split(shortcutIDs, ",") {
-				shortcutID, err := util.ConvertStringToInt32(idStr)
+				shortcutID, err := slashutil.ConvertStringToInt32(idStr)
 				if err != nil {
 					return nil, errors.Wrap(err, "failed to convert shortcut id")
 				}

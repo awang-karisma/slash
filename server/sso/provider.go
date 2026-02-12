@@ -2,8 +2,8 @@ package sso
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/pkg/errors"
 	"github.com/yourselfhosted/slash/plugin/idp/oauth2"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
@@ -13,7 +13,7 @@ func BuildEnvIdentityProvider(ctx context.Context, config *SSOConfig) (*storepb.
 	// Fetch discovery document
 	discovery, err := FetchDiscovery(ctx, config.IssuerURL)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch OpenID discovery: %w", err)
+		return nil, errors.Wrap(err, "failed to fetch OpenID discovery")
 	}
 
 	// Determine scopes - use env var if set, otherwise use discovery defaults
@@ -49,10 +49,10 @@ func BuildEnvIdentityProvider(ctx context.Context, config *SSOConfig) (*storepb.
 func GetEnvIdentityProvider(ctx context.Context) (*storepb.IdentityProvider, error) {
 	config, err := LoadSSOConfig()
 	if err != nil {
-		return nil, fmt.Errorf("failed to load env config: %w", err)
+		return nil, errors.Wrap(err, "failed to load env config")
 	}
 	if config == nil {
-		return nil, fmt.Errorf("environment SSO not configured")
+		return nil, errors.New("environment SSO not configured")
 	}
 
 	return BuildEnvIdentityProvider(ctx, config)
@@ -72,7 +72,7 @@ func NewEnvOAuth2Provider(ctx context.Context) (*oauth2.IdentityProvider, error)
 
 	oauth2Config := identityProvider.GetConfig().GetOauth2()
 	if oauth2Config == nil {
-		return nil, fmt.Errorf("identity provider is not OAuth2 type")
+		return nil, errors.New("identity provider is not OAuth2 type")
 	}
 
 	return oauth2.NewIdentityProvider(oauth2Config)

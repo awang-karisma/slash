@@ -194,6 +194,8 @@ func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *v1pb.UpdateS
 					Image:       request.Shortcut.OgMetadata.Image,
 				}
 			}
+		default:
+			// Skip unknown paths
 		}
 	}
 	shortcut, err = s.Store.UpdateShortcut(ctx, update)

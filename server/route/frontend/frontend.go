@@ -14,9 +14,9 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/internal/slashutil"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/common"
+	"github.com/yourselfhosted/slash/server/constant"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -47,7 +47,7 @@ func (s *FrontendService) Serve(_ context.Context, e *echo.Echo) {
 		HTML5:      true,
 		Filesystem: getFileSystem("dist"),
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
+			return slashutil.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 	}))
 
@@ -56,7 +56,7 @@ func (s *FrontendService) Serve(_ context.Context, e *echo.Echo) {
 	// Reference: https://echo.labstack.com/docs/middleware/gzip
 	assetsGroup.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
+			return slashutil.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 		Level: 5,
 	}))
@@ -70,7 +70,7 @@ func (s *FrontendService) Serve(_ context.Context, e *echo.Echo) {
 		HTML5:      true,
 		Filesystem: getFileSystem("dist/assets"),
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
+			return slashutil.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 	}))
 
@@ -138,7 +138,7 @@ func (s *FrontendService) createShortcutViewActivity(ctx context.Context, reques
 		return errors.Wrap(err, "Failed to marshal activity payload")
 	}
 	activity := &store.Activity{
-		CreatorID: common.BotID,
+		CreatorID: constant.BotID,
 		Type:      store.ActivityShortcutView,
 		Level:     store.ActivityInfo,
 		Payload:   string(payloadStr),

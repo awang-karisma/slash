@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/internal/slashutil"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -103,7 +103,7 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessToken str
 		)
 	}
 
-	userID, err := util.ConvertStringToInt32(claims.Subject)
+	userID, err := slashutil.ConvertStringToInt32(claims.Subject)
 	if err != nil {
 		return 0, status.Errorf(codes.Unauthenticated, "malformed ID %q in the access token", claims.Subject)
 	}

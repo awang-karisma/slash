@@ -3,10 +3,11 @@ package sso
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 // OpenIDConfiguration represents the OIDC discovery document.
@@ -29,31 +30,31 @@ func FetchDiscovery(ctx context.Context, issuerURL string) (*OpenIDConfiguration
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, discoveryURL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create discovery request: %w", err)
+		return nil, errors.Wrap(err, "failed to create discovery request")
 	}
 	req.Header.Set("Accept", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch discovery document: %w", err)
+		return nil, errors.Wrap(err, "failed to fetch discovery document")
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("discovery endpoint returned status %d", resp.StatusCode)
+		return nil, errors.Errorf("discovery endpoint returned status %d: %s", resp.StatusCode, resp.Status)
 	}
 
 	var config OpenIDConfiguration
 	if err := json.NewDecoder(resp.Body).Decode(&config); err != nil {
-		return nil, fmt.Errorf("failed to decode discovery document: %w", err)
+		return nil, errors.Wrap(err, "failed to decode discovery document")
 	}
 
 	// Validate required fields
 	if config.AuthURL == "" {
-		return nil, fmt.Errorf("authorization_endpoint not found in discovery document")
+		return nil, errors.New("authorization_endpoint not found in discovery document")
 	}
 	if config.TokenURL == "" {
-		return nil, fmt.Errorf("token_endpoint not found in discovery document")
+		return nil, errors.New("token_endpoint not found in discovery document")
 	}
 
 	return &config, nil

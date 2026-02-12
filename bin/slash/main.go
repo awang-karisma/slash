@@ -13,8 +13,8 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/yourselfhosted/slash/server"
-	"github.com/yourselfhosted/slash/server/common"
 	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/version"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
 )
@@ -34,7 +34,7 @@ var (
 				Data:    viper.GetString("data"),
 				DSN:     viper.GetString("dsn"),
 				Driver:  viper.GetString("driver"),
-				Version: common.GetCurrentVersion(viper.GetString("mode")),
+				Version: version.GetCurrentVersion(viper.GetString("mode")),
 			}
 			if err := serverProfile.Validate(); err != nil {
 				panic(err)
@@ -127,19 +127,19 @@ func init() {
 }
 
 func printGreetings(serverProfile *profile.Profile) {
-	println("---")
-	println("Server profile")
-	println("dsn:", serverProfile.DSN)
-	println("port:", serverProfile.Port)
-	println("mode:", serverProfile.Mode)
-	println("version:", serverProfile.Version)
-	println("---")
-	println(greetingBanner)
+	fmt.Fprintln(os.Stderr, "---")
+	fmt.Fprintln(os.Stderr, "Server profile")
+	fmt.Fprintln(os.Stderr, "dsn:", serverProfile.DSN)
+	fmt.Fprintln(os.Stderr, "port:", serverProfile.Port)
+	fmt.Fprintln(os.Stderr, "mode:", serverProfile.Mode)
+	fmt.Fprintln(os.Stderr, "version:", serverProfile.Version)
+	fmt.Fprintln(os.Stderr, "---")
+	fmt.Fprintln(os.Stderr, greetingBanner)
 	fmt.Printf("Version %s has been started on port %d\n", serverProfile.Version, serverProfile.Port)
-	println("---")
-	println("See more in:")
+	fmt.Fprintln(os.Stderr, "---")
+	fmt.Fprintln(os.Stderr, "See more in:")
 	fmt.Printf("👉GitHub: %s\n", "https://github.com/yourselfhosted/slash")
-	println("---")
+	fmt.Fprintln(os.Stderr, "---")
 }
 
 func main() {

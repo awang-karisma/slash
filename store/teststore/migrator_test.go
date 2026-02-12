@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/yourselfhosted/slash/server/common"
 	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/version"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -38,7 +38,7 @@ func newTestingStoreWithConfig(driver string) *store.Store {
 	profile := &profile.Profile{
 		Mode:    "prod",
 		Driver:  driver,
-		Version: common.GetCurrentVersion("prod"),
+		Version: version.GetCurrentVersion("prod"),
 	}
 	return store.New(nil, profile)
 }
@@ -56,7 +56,7 @@ func TestMigratorValidation(t *testing.T) {
 				return store.New(nil, &profile.Profile{
 					Mode:    "prod",
 					Driver:  "sqlite",
-					Version: common.GetCurrentVersion("prod"),
+					Version: version.GetCurrentVersion("prod"),
 				})
 			},
 			wantErr: false,
@@ -67,7 +67,7 @@ func TestMigratorValidation(t *testing.T) {
 				return store.New(nil, &profile.Profile{
 					Mode:    "prod",
 					Driver:  "postgres",
-					Version: common.GetCurrentVersion("prod"),
+					Version: version.GetCurrentVersion("prod"),
 				})
 			},
 			wantErr: false,
@@ -95,7 +95,7 @@ func TestGetSchemaVersionOfMigrateScript(t *testing.T) {
 	s := store.New(nil, &profile.Profile{
 		Mode:    "prod",
 		Driver:  "sqlite",
-		Version: common.GetCurrentVersion("prod"),
+		Version: version.GetCurrentVersion("prod"),
 	})
 
 	tests := []struct {
