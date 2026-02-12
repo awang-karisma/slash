@@ -78,8 +78,6 @@ type WorkspaceProfile struct {
 	// The owner name.
 	// Format: "users/{id}"
 	Owner string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
-	// The workspace subscription.
-	Subscription *Subscription `protobuf:"bytes,4,opt,name=subscription,proto3" json:"subscription,omitempty"`
 	// The workspace branding.
 	Branding      []byte `protobuf:"bytes,6,opt,name=branding,proto3" json:"branding,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -135,13 +133,6 @@ func (x *WorkspaceProfile) GetOwner() string {
 		return x.Owner
 	}
 	return ""
-}
-
-func (x *WorkspaceProfile) GetSubscription() *Subscription {
-	if x != nil {
-		return x.Subscription
-	}
-	return nil
 }
 
 func (x *WorkspaceProfile) GetBranding() []byte {
@@ -659,12 +650,11 @@ var File_api_v1_workspace_service_proto protoreflect.FileDescriptor
 
 const file_api_v1_workspace_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1eapi/v1/workspace_service.proto\x12\fslash.api.v1\x1a\x13api/v1/common.proto\x1a!api/v1/subscription_service.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a google/protobuf/field_mask.proto\"\xb2\x01\n" +
+	"\x1eapi/v1/workspace_service.proto\x12\fslash.api.v1\x1a\x13api/v1/common.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a google/protobuf/field_mask.proto\"r\n" +
 	"\x10WorkspaceProfile\x12\x12\n" +
 	"\x04mode\x18\x01 \x01(\tR\x04mode\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x14\n" +
-	"\x05owner\x18\x03 \x01(\tR\x05owner\x12>\n" +
-	"\fsubscription\x18\x04 \x01(\v2\x1a.slash.api.v1.SubscriptionR\fsubscription\x12\x1a\n" +
+	"\x05owner\x18\x03 \x01(\tR\x05owner\x12\x1a\n" +
 	"\bbranding\x18\x06 \x01(\fR\bbranding\"\xfa\x02\n" +
 	"\x10WorkspaceSetting\x12!\n" +
 	"\finstance_url\x18\x01 \x01(\tR\vinstanceUrl\x12\x1a\n" +
@@ -736,31 +726,29 @@ var file_api_v1_workspace_service_proto_goTypes = []any{
 	(*UpdateWorkspaceSettingRequest)(nil),       // 7: slash.api.v1.UpdateWorkspaceSettingRequest
 	(*IdentityProviderConfig_FieldMapping)(nil), // 8: slash.api.v1.IdentityProviderConfig.FieldMapping
 	(*IdentityProviderConfig_OAuth2Config)(nil), // 9: slash.api.v1.IdentityProviderConfig.OAuth2Config
-	(*Subscription)(nil),                        // 10: slash.api.v1.Subscription
-	(Visibility)(0),                             // 11: slash.api.v1.Visibility
-	(*fieldmaskpb.FieldMask)(nil),               // 12: google.protobuf.FieldMask
+	(Visibility)(0),                             // 10: slash.api.v1.Visibility
+	(*fieldmaskpb.FieldMask)(nil),               // 11: google.protobuf.FieldMask
 }
 var file_api_v1_workspace_service_proto_depIdxs = []int32{
-	10, // 0: slash.api.v1.WorkspaceProfile.subscription:type_name -> slash.api.v1.Subscription
-	11, // 1: slash.api.v1.WorkspaceSetting.default_visibility:type_name -> slash.api.v1.Visibility
-	3,  // 2: slash.api.v1.WorkspaceSetting.identity_providers:type_name -> slash.api.v1.IdentityProvider
-	0,  // 3: slash.api.v1.IdentityProvider.type:type_name -> slash.api.v1.IdentityProvider.Type
-	4,  // 4: slash.api.v1.IdentityProvider.config:type_name -> slash.api.v1.IdentityProviderConfig
-	9,  // 5: slash.api.v1.IdentityProviderConfig.oauth2:type_name -> slash.api.v1.IdentityProviderConfig.OAuth2Config
-	2,  // 6: slash.api.v1.UpdateWorkspaceSettingRequest.setting:type_name -> slash.api.v1.WorkspaceSetting
-	12, // 7: slash.api.v1.UpdateWorkspaceSettingRequest.update_mask:type_name -> google.protobuf.FieldMask
-	8,  // 8: slash.api.v1.IdentityProviderConfig.OAuth2Config.field_mapping:type_name -> slash.api.v1.IdentityProviderConfig.FieldMapping
-	5,  // 9: slash.api.v1.WorkspaceService.GetWorkspaceProfile:input_type -> slash.api.v1.GetWorkspaceProfileRequest
-	6,  // 10: slash.api.v1.WorkspaceService.GetWorkspaceSetting:input_type -> slash.api.v1.GetWorkspaceSettingRequest
-	7,  // 11: slash.api.v1.WorkspaceService.UpdateWorkspaceSetting:input_type -> slash.api.v1.UpdateWorkspaceSettingRequest
-	1,  // 12: slash.api.v1.WorkspaceService.GetWorkspaceProfile:output_type -> slash.api.v1.WorkspaceProfile
-	2,  // 13: slash.api.v1.WorkspaceService.GetWorkspaceSetting:output_type -> slash.api.v1.WorkspaceSetting
-	2,  // 14: slash.api.v1.WorkspaceService.UpdateWorkspaceSetting:output_type -> slash.api.v1.WorkspaceSetting
-	12, // [12:15] is the sub-list for method output_type
-	9,  // [9:12] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	10, // 0: slash.api.v1.WorkspaceSetting.default_visibility:type_name -> slash.api.v1.Visibility
+	3,  // 1: slash.api.v1.WorkspaceSetting.identity_providers:type_name -> slash.api.v1.IdentityProvider
+	0,  // 2: slash.api.v1.IdentityProvider.type:type_name -> slash.api.v1.IdentityProvider.Type
+	4,  // 3: slash.api.v1.IdentityProvider.config:type_name -> slash.api.v1.IdentityProviderConfig
+	9,  // 4: slash.api.v1.IdentityProviderConfig.oauth2:type_name -> slash.api.v1.IdentityProviderConfig.OAuth2Config
+	2,  // 5: slash.api.v1.UpdateWorkspaceSettingRequest.setting:type_name -> slash.api.v1.WorkspaceSetting
+	11, // 6: slash.api.v1.UpdateWorkspaceSettingRequest.update_mask:type_name -> google.protobuf.FieldMask
+	8,  // 7: slash.api.v1.IdentityProviderConfig.OAuth2Config.field_mapping:type_name -> slash.api.v1.IdentityProviderConfig.FieldMapping
+	5,  // 8: slash.api.v1.WorkspaceService.GetWorkspaceProfile:input_type -> slash.api.v1.GetWorkspaceProfileRequest
+	6,  // 9: slash.api.v1.WorkspaceService.GetWorkspaceSetting:input_type -> slash.api.v1.GetWorkspaceSettingRequest
+	7,  // 10: slash.api.v1.WorkspaceService.UpdateWorkspaceSetting:input_type -> slash.api.v1.UpdateWorkspaceSettingRequest
+	1,  // 11: slash.api.v1.WorkspaceService.GetWorkspaceProfile:output_type -> slash.api.v1.WorkspaceProfile
+	2,  // 12: slash.api.v1.WorkspaceService.GetWorkspaceSetting:output_type -> slash.api.v1.WorkspaceSetting
+	2,  // 13: slash.api.v1.WorkspaceService.UpdateWorkspaceSetting:output_type -> slash.api.v1.WorkspaceSetting
+	11, // [11:14] is the sub-list for method output_type
+	8,  // [8:11] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_workspace_service_proto_init() }
@@ -769,7 +757,6 @@ func file_api_v1_workspace_service_proto_init() {
 		return
 	}
 	file_api_v1_common_proto_init()
-	file_api_v1_subscription_service_proto_init()
 	file_api_v1_workspace_service_proto_msgTypes[3].OneofWrappers = []any{
 		(*IdentityProviderConfig_Oauth2)(nil),
 	}

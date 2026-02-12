@@ -53,10 +53,6 @@ func (s *APIV1Service) CreateUser(ctx context.Context, request *v1pb.CreateUserR
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
 	}
 
-	if err := s.checkSeatAvailability(ctx); err != nil {
-		return nil, err
-	}
-
 	user, err := s.Store.CreateUser(ctx, &store.User{
 		Email:        request.User.Email,
 		Nickname:     request.User.Nickname,

@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useWorkspaceStore } from "@/stores";
 import useNavigateTo from "./hooks/useNavigateTo";
-import { FeatureType } from "./stores/workspace";
 
 function App() {
   const navigateTo = useNavigateTo();
@@ -21,8 +20,7 @@ function App() {
   }, [workspaceStore.profile]);
 
   useEffect(() => {
-    const hasCustomBranding = workspaceStore.checkFeatureAvailable(FeatureType.CustomeBranding);
-    if (!hasCustomBranding || !workspaceStore.setting.branding) {
+    if (!workspaceStore.setting.branding) {
       return;
     }
 

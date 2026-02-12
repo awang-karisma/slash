@@ -62,16 +62,6 @@
   
     - [ShortcutService](#slash-api-v1-ShortcutService)
   
-- [api/v1/subscription_service.proto](#api_v1_subscription_service-proto)
-    - [DeleteSubscriptionRequest](#slash-api-v1-DeleteSubscriptionRequest)
-    - [GetSubscriptionRequest](#slash-api-v1-GetSubscriptionRequest)
-    - [Subscription](#slash-api-v1-Subscription)
-    - [UpdateSubscriptionRequest](#slash-api-v1-UpdateSubscriptionRequest)
-  
-    - [PlanType](#slash-api-v1-PlanType)
-  
-    - [SubscriptionService](#slash-api-v1-SubscriptionService)
-  
 - [api/v1/user_setting_service.proto](#api_v1_user_setting_service-proto)
     - [GetUserSettingRequest](#slash-api-v1-GetUserSettingRequest)
     - [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest)
@@ -857,104 +847,6 @@
 
 
 
-<a name="api_v1_subscription_service-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## api/v1/subscription_service.proto
-
-
-
-<a name="slash-api-v1-DeleteSubscriptionRequest"></a>
-
-### DeleteSubscriptionRequest
-
-
-
-
-
-
-
-<a name="slash-api-v1-GetSubscriptionRequest"></a>
-
-### GetSubscriptionRequest
-
-
-
-
-
-
-
-<a name="slash-api-v1-Subscription"></a>
-
-### Subscription
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| plan | [PlanType](#slash-api-v1-PlanType) |  |  |
-| started_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| features | [string](#string) | repeated |  |
-| seats | [int32](#int32) |  |  |
-| shortcuts_limit | [int32](#int32) |  |  |
-| collections_limit | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v1-UpdateSubscriptionRequest"></a>
-
-### UpdateSubscriptionRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| license_key | [string](#string) |  |  |
-
-
-
-
-
- 
-
-
-<a name="slash-api-v1-PlanType"></a>
-
-### PlanType
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| PLAN_TYPE_UNSPECIFIED | 0 |  |
-| FREE | 1 |  |
-| PRO | 2 |  |
-| ENTERPRISE | 3 |  |
-
-
- 
-
- 
-
-
-<a name="slash-api-v1-SubscriptionService"></a>
-
-### SubscriptionService
-
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| GetSubscription | [GetSubscriptionRequest](#slash-api-v1-GetSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | GetSubscription gets the current subscription of Slash instance. |
-| UpdateSubscription | [UpdateSubscriptionRequest](#slash-api-v1-UpdateSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | UpdateSubscription updates the subscription. |
-| DeleteSubscription | [DeleteSubscriptionRequest](#slash-api-v1-DeleteSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | DeleteSubscription deletes the subscription. |
-
- 
-
-
-
 <a name="api_v1_user_setting_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -1202,7 +1094,6 @@
 | mode | [string](#string) |  | Current workspace mode: dev, prod. |
 | version | [string](#string) |  | Current workspace version. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
-| subscription | [Subscription](#slash-api-v1-Subscription) |  | The workspace subscription. |
 | branding | [bytes](#bytes) |  | The workspace branding. |
 
 

@@ -3,7 +3,6 @@ syntax = "proto3";
 package slash.api.v1;
 
 import "api/v1/common.proto";
-import "api/v1/subscription_service.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/protobuf/field_mask.proto";
@@ -34,8 +33,6 @@ message WorkspaceProfile {
   // The owner name.
   // Format: "users/{id}"
   string owner = 3;
-  // The workspace subscription.
-  Subscription subscription = 4;
   // The workspace branding.
   bytes branding = 6;
 }
