@@ -1,4 +1,4 @@
-package constant
+package constants
 
 const (
 	// BotID is the id of bot.

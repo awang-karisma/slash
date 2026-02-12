@@ -16,7 +16,7 @@ import (
 
 	"github.com/yourselfhosted/slash/internal/slashutil"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/constant"
+	"github.com/yourselfhosted/slash/server/constants"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -138,7 +138,7 @@ func (s *FrontendService) createShortcutViewActivity(ctx context.Context, reques
 		return errors.Wrap(err, "Failed to marshal activity payload")
 	}
 	activity := &store.Activity{
-		CreatorID: constant.BotID,
+		CreatorID: constants.BotID,
 		Type:      store.ActivityShortcutView,
 		Level:     store.ActivityInfo,
 		Payload:   string(payloadStr),

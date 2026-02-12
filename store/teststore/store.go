@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/server/version"
+	"github.com/yourselfhosted/slash/server/versionpkg"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
 )
@@ -79,7 +79,7 @@ func getTestingProfile(t *testing.T) *profile.Profile {
 		Data:    dir,
 		DSN:     dsn,
 		Driver:  driver,
-		Version: version.GetCurrentVersion(mode),
+		Version: versionpkg.GetCurrentVersion(mode),
 	}
 }
 

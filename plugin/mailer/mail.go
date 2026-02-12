@@ -1,4 +1,4 @@
-package mail
+package mailer
 
 import (
 	"crypto/tls"
@@ -89,7 +89,7 @@ func (e *Email) SetBody(body string) *Email {
 	return e
 }
 
-// The ContentType is the type of the content.
+// The ContentType is the type of content.
 // https://cloud.google.com/appengine/docs/legacy/standard/php/mail/mail-with-headers-attachments.
 type ContentType string
 
@@ -197,9 +197,8 @@ func (c *SMTPClient) getAuth() smtp.Auth {
 		return LoginAuth(c.username, c.password)
 	case SMTPAuthTypeCRAMMD5:
 		return smtp.CRAMMD5Auth(c.username, c.password)
-	default:
-		return nil
 	}
+	return nil
 }
 
 // SetEncryptionType sets the encryption type of the SMTP client.

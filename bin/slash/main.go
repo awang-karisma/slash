@@ -14,7 +14,7 @@ import (
 
 	"github.com/yourselfhosted/slash/server"
 	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/server/version"
+	"github.com/yourselfhosted/slash/server/versionpkg"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
 )
@@ -34,7 +34,7 @@ var (
 				Data:    viper.GetString("data"),
 				DSN:     viper.GetString("dsn"),
 				Driver:  viper.GetString("driver"),
-				Version: version.GetCurrentVersion(viper.GetString("mode")),
+				Version: versionpkg.GetCurrentVersion(viper.GetString("mode")),
 			}
 			if err := serverProfile.Validate(); err != nil {
 				panic(err)

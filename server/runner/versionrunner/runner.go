@@ -1,5 +1,5 @@
-// Package version provides a runner to check the latest version of the application.
-package version
+// Package versionrunner provides a runner to check the latest version of the application.
+package versionrunner
 
 import (
 	"context"

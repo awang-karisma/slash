@@ -19,16 +19,16 @@ import (
 )
 
 const (
-	// maxResponseSize is the maximum response size in bytes (10MB)
+	// maxResponseSize is the maximum response size in bytes (10MB).
 	maxResponseSize = 10 * 1024 * 1024
-	// fetchTimeout is the timeout for fetching a URL
+	// fetchTimeout is the timeout for fetching a URL.
 	fetchTimeout = 10 * time.Second
-	// maxRedirects is the maximum number of redirects to follow
+	// maxRedirects is the maximum number of redirects to follow.
 	maxRedirects = 5
 )
 
-// GetUrlMetadata fetches social metadata from a URL.
-func (s *APIV1Service) GetUrlMetadata(ctx context.Context, request *v1pb.GetUrlMetadataRequest) (*v1pb.GetUrlMetadataResponse, error) {
+// GetURLMetadata fetches social metadata from a URL.
+func GetURLMetadata(ctx context.Context, request *v1pb.GetUrlMetadataRequest) (*v1pb.GetUrlMetadataResponse, error) {
 	// Validate URL
 	parsedURL, err := url.Parse(request.Url)
 	if err != nil {
@@ -53,7 +53,7 @@ func (s *APIV1Service) GetUrlMetadata(ctx context.Context, request *v1pb.GetUrlM
 	}
 
 	// Fetch the URL
-	resp, err := s.fetchURLWithRedirects(ctx, request.Url)
+	resp, err := fetchURLWithRedirects(ctx, request.Url)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch URL: %v", err)
 	}
@@ -106,10 +106,10 @@ func isPrivateIP(ip net.IP) bool {
 }
 
 // fetchURLWithRedirects fetches a URL following redirects.
-func (s *APIV1Service) fetchURLWithRedirects(ctx context.Context, targetURL string) (*http.Response, error) {
+func fetchURLWithRedirects(ctx context.Context, targetURL string) (*http.Response, error) {
 	client := &http.Client{
 		Timeout: fetchTimeout,
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		CheckRedirect: func(_ *http.Request, via []*http.Request) error {
 			if len(via) >= maxRedirects {
 				return errors.New("too many redirects")
 			}
@@ -133,7 +133,7 @@ func (s *APIV1Service) fetchURLWithRedirects(ctx context.Context, targetURL stri
 	return resp, nil
 }
 
-// ogMetadata holds extracted Open Graph metadata from HTML
+// ogMetadata holds extracted Open Graph metadata from HTML.
 type ogMetadata struct {
 	title       string
 	description string

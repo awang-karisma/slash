@@ -16,7 +16,7 @@ import (
 	"github.com/yourselfhosted/slash/server/profile"
 	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
 	"github.com/yourselfhosted/slash/server/route/frontend"
-	"github.com/yourselfhosted/slash/server/runner/version"
+	"github.com/yourselfhosted/slash/server/runner/versionrunner"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -110,7 +110,7 @@ func (s *Server) GetEcho() *echo.Echo {
 }
 
 func (s *Server) StartBackgroundRunners(ctx context.Context) {
-	versionRunner := version.NewRunner(s.Store, s.Profile)
+	versionRunner := versionrunner.NewRunner(s.Store, s.Profile)
 	versionRunner.RunOnce(ctx)
 
 	go versionRunner.Run(ctx)
