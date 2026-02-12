@@ -77,6 +77,19 @@ export interface GetShortcutAnalyticsResponse_AnalyticsItem {
   count: number;
 }
 
+export interface GetUrlMetadataRequest {
+  url: string;
+}
+
+export interface GetUrlMetadataResponse {
+  title: string;
+  description: string;
+  image: string;
+  siteName: string;
+  url: string;
+  favicon: string;
+}
+
 function createBaseShortcut(): Shortcut {
   return {
     id: 0,
@@ -842,6 +855,158 @@ export const GetShortcutAnalyticsResponse_AnalyticsItem: MessageFns<GetShortcutA
   },
 };
 
+function createBaseGetUrlMetadataRequest(): GetUrlMetadataRequest {
+  return { url: "" };
+}
+
+export const GetUrlMetadataRequest: MessageFns<GetUrlMetadataRequest> = {
+  encode(message: GetUrlMetadataRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetUrlMetadataRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUrlMetadataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetUrlMetadataRequest>): GetUrlMetadataRequest {
+    return GetUrlMetadataRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetUrlMetadataRequest>): GetUrlMetadataRequest {
+    const message = createBaseGetUrlMetadataRequest();
+    message.url = object.url ?? "";
+    return message;
+  },
+};
+
+function createBaseGetUrlMetadataResponse(): GetUrlMetadataResponse {
+  return { title: "", description: "", image: "", siteName: "", url: "", favicon: "" };
+}
+
+export const GetUrlMetadataResponse: MessageFns<GetUrlMetadataResponse> = {
+  encode(message: GetUrlMetadataResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.title !== "") {
+      writer.uint32(10).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.image !== "") {
+      writer.uint32(26).string(message.image);
+    }
+    if (message.siteName !== "") {
+      writer.uint32(34).string(message.siteName);
+    }
+    if (message.url !== "") {
+      writer.uint32(42).string(message.url);
+    }
+    if (message.favicon !== "") {
+      writer.uint32(50).string(message.favicon);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetUrlMetadataResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUrlMetadataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.image = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.siteName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.favicon = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  create(base?: DeepPartial<GetUrlMetadataResponse>): GetUrlMetadataResponse {
+    return GetUrlMetadataResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetUrlMetadataResponse>): GetUrlMetadataResponse {
+    const message = createBaseGetUrlMetadataResponse();
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
+    message.image = object.image ?? "";
+    message.siteName = object.siteName ?? "";
+    message.url = object.url ?? "";
+    message.favicon = object.favicon ?? "";
+    return message;
+  },
+};
+
 export type ShortcutServiceDefinition = typeof ShortcutServiceDefinition;
 export const ShortcutServiceDefinition = {
   name: "ShortcutService",
@@ -1133,6 +1298,59 @@ export const ShortcutServiceDefinition = {
               105,
               99,
               115,
+            ]),
+          ],
+        },
+      },
+    },
+    /** GetUrlMetadata fetches social metadata from a URL. */
+    getUrlMetadata: {
+      name: "GetUrlMetadata",
+      requestType: GetUrlMetadataRequest,
+      requestStream: false,
+      responseType: GetUrlMetadataResponse,
+      responseStream: false,
+      options: {
+        _unknownFields: {
+          578365826: [
+            new Uint8Array([
+              36,
+              58,
+              1,
+              42,
+              34,
+              31,
+              47,
+              97,
+              112,
+              105,
+              47,
+              118,
+              49,
+              47,
+              115,
+              104,
+              111,
+              114,
+              116,
+              99,
+              117,
+              116,
+              115,
+              58,
+              102,
+              101,
+              116,
+              99,
+              104,
+              77,
+              101,
+              116,
+              97,
+              100,
+              97,
+              116,
+              97,
             ]),
           ],
         },

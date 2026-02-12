@@ -54,6 +54,8 @@
     - [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v1-GetShortcutAnalyticsResponse-AnalyticsItem)
     - [GetShortcutByNameRequest](#slash-api-v1-GetShortcutByNameRequest)
     - [GetShortcutRequest](#slash-api-v1-GetShortcutRequest)
+    - [GetUrlMetadataRequest](#slash-api-v1-GetUrlMetadataRequest)
+    - [GetUrlMetadataResponse](#slash-api-v1-GetUrlMetadataResponse)
     - [ListShortcutsRequest](#slash-api-v1-ListShortcutsRequest)
     - [ListShortcutsResponse](#slash-api-v1-ListShortcutsResponse)
     - [Shortcut](#slash-api-v1-Shortcut)
@@ -738,6 +740,41 @@
 
 
 
+<a name="slash-api-v1-GetUrlMetadataRequest"></a>
+
+### GetUrlMetadataRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| url | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v1-GetUrlMetadataResponse"></a>
+
+### GetUrlMetadataResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| title | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| image | [string](#string) |  |  |
+| site_name | [string](#string) |  |  |
+| url | [string](#string) |  |  |
+| favicon | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v1-ListShortcutsRequest"></a>
 
 ### ListShortcutsRequest
@@ -842,6 +879,7 @@
 | UpdateShortcut | [UpdateShortcutRequest](#slash-api-v1-UpdateShortcutRequest) | [Shortcut](#slash-api-v1-Shortcut) | UpdateShortcut updates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v1-DeleteShortcutRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteShortcut deletes a shortcut by name. |
 | GetShortcutAnalytics | [GetShortcutAnalyticsRequest](#slash-api-v1-GetShortcutAnalyticsRequest) | [GetShortcutAnalyticsResponse](#slash-api-v1-GetShortcutAnalyticsResponse) | GetShortcutAnalytics returns the analytics for a shortcut. |
+| GetUrlMetadata | [GetUrlMetadataRequest](#slash-api-v1-GetUrlMetadataRequest) | [GetUrlMetadataResponse](#slash-api-v1-GetUrlMetadataResponse) | GetUrlMetadata fetches social metadata from a URL. |
 
  
 

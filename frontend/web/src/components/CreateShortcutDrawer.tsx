@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import useLoading from "@/hooks/useLoading";
+import { useUrlMetadata } from "@/hooks/useUrlMetadata";
 import { useShortcutStore, useWorkspaceStore } from "@/stores";
 import { getShortcutUpdateMask } from "@/stores/shortcut";
 import { Visibility } from "@/types/proto/api/v1/common";
@@ -51,6 +52,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const isCreating = isUndefined(shortcutId);
   const loadingState = useLoading(!isCreating);
   const requestState = useLoading(false);
+  const { fetchMetadata, loading: metadataLoading } = useUrlMetadata();
+  const [urlInputTimeout, setUrlInputTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   const setPartialState = (partialState: Partial<State>) => {
     setState({
@@ -103,11 +106,53 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   };
 
   const handleLinkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        link: e.target.value,
+        link: url,
       }),
     });
+
+    // Debounce metadata fetch
+    if (urlInputTimeout) {
+      clearTimeout(urlInputTimeout);
+    }
+    if (url && isValidUrl(url)) {
+      const timeout = setTimeout(() => {
+        fetchAndPrefillMetadata(url);
+      }, 1000);
+      setUrlInputTimeout(timeout);
+    }
+  };
+
+  // Helper function to validate URL
+  const isValidUrl = (urlString: string): boolean => {
+    try {
+      new URL(urlString);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // Fetch metadata and prefill form fields
+  const fetchAndPrefillMetadata = async (url: string) => {
+    const metadata = await fetchMetadata(url);
+    if (metadata) {
+      // Only prefill if fields are empty to respect user edits
+      setPartialState({
+        shortcutCreate: Object.assign(state.shortcutCreate, {
+          title: state.shortcutCreate.title || metadata.title || "",
+          ogMetadata: {
+            title: state.shortcutCreate.ogMetadata?.title || metadata.title || "",
+            description: state.shortcutCreate.ogMetadata?.description || metadata.description || "",
+            image: state.shortcutCreate.ogMetadata?.image || metadata.image || "",
+          },
+        }),
+      });
+      // Auto-expand the social metadata section to show the fetched data
+      setShowOpenGraphMetadata(true);
+    }
   };
 
   const handleTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,13 +281,19 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
               <Label htmlFor="link">
                 Link <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="link"
-                type="text"
-                placeholder="The destination link of the shortcut"
-                value={state.shortcutCreate.link}
-                onChange={handleLinkInputChange}
-              />
+              <div className="relative">
+                <Input
+                  id="link"
+                  type="text"
+                  placeholder="The destination link of the shortcut"
+                  value={state.shortcutCreate.link}
+                  onChange={handleLinkInputChange}
+                  className={metadataLoading ? "pr-10" : ""}
+                />
+                {metadataLoading && (
+                  <Icon.Loader className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
@@ -313,9 +364,26 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                   Social media metadata
                   <Icon.Sparkles className="w-4 h-auto text-primary" />
                 </span>
-                <Icon.ChevronDown
-                  className={classnames("w-4 h-auto text-muted-foreground transition-transform", showOpenGraphMetadata && "rotate-180")}
-                />
+                <div className="flex items-center gap-2">
+                  {state.shortcutCreate.link && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 px-2 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        fetchAndPrefillMetadata(state.shortcutCreate.link);
+                      }}
+                      disabled={metadataLoading}
+                    >
+                      <Icon.RefreshCw className={classnames("w-3 h-3 mr-1", metadataLoading && "animate-spin")} />
+                      Refresh
+                    </Button>
+                  )}
+                  <Icon.ChevronDown
+                    className={classnames("w-4 h-auto text-muted-foreground transition-transform", showOpenGraphMetadata && "rotate-180")}
+                  />
+                </div>
               </div>
               {showOpenGraphMetadata && (
                 <div className="p-3 space-y-4">
