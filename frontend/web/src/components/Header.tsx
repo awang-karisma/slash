@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { authServiceClient } from "@/grpcweb";
-import { useWorkspaceStore, useUserStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import { Role } from "@/types/proto/api/v1/user_service";
 import AboutDialog from "./AboutDialog";
 import Icon from "./Icon";
@@ -12,7 +12,6 @@ import Dropdown from "./common/Dropdown";
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
   const isAdmin = currentUser.role === Role.ADMIN;

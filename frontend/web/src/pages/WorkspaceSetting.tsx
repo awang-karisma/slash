@@ -1,9 +1,7 @@
 import { toast } from "sonner";
-import Icon from "@/components/Icon";
 import WorkspaceGeneralSettingSection from "@/components/setting/WorkspaceGeneralSettingSection";
 import WorkspaceMembersSection from "@/components/setting/WorkspaceMembersSection";
 import WorkspaceSecuritySection from "@/components/setting/WorkspaceSecuritySection";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUserStore } from "@/stores";
 import { Role } from "@/types/proto/api/v1/user_service";
