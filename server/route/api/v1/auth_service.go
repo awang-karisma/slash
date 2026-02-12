@@ -18,6 +18,7 @@ import (
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/server/sso"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -69,10 +70,12 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 }
 
 func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {
-	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeSSO) {
-		return nil, status.Errorf(codes.PermissionDenied, "SSO is not available in the current plan")
+	// Check if this is an environment-based identity provider
+	if sso.IsEnvIdentityProviderID(request.IdpId) {
+		return s.handleEnvSSOLogin(ctx, request)
 	}
 
+	// Fall back to database-based identity provider
 	identityProviderSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER,
 	})
@@ -93,6 +96,30 @@ func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWi
 		return nil, status.Errorf(codes.InvalidArgument, "identity provider not found")
 	}
 
+	return s.handleSSOLogin(ctx, request, identityProvider)
+}
+
+// handleEnvSSOLogin handles SSO login for environment-based identity providers.
+func (s *APIV1Service) handleEnvSSOLogin(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {
+	oauth2IdentityProvider, err := sso.NewEnvOAuth2Provider(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create OAuth2 identity provider: %v", err)
+	}
+
+	token, err := oauth2IdentityProvider.ExchangeToken(ctx, request.RedirectUri, request.Code)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to exchange token: %v", err)
+	}
+	userInfo, err := oauth2IdentityProvider.UserInfo(token)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user info: %v", err)
+	}
+
+	return s.handleUserLogin(ctx, userInfo)
+}
+
+// handleSSOLogin handles SSO login for database-based identity providers.
+func (s *APIV1Service) handleSSOLogin(ctx context.Context, request *v1pb.SignInWithSSORequest, identityProvider *storepb.IdentityProvider) (*v1pb.User, error) {
 	var userInfo *idp.IdentityProviderUserInfo
 	if identityProvider.Type == storepb.IdentityProvider_OAUTH2 {
 		oauth2IdentityProvider, err := oauth2.NewIdentityProvider(identityProvider.Config.GetOauth2())
@@ -109,6 +136,11 @@ func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWi
 		}
 	}
 
+	return s.handleUserLogin(ctx, userInfo)
+}
+
+// handleUserLogin handles the user login process after obtaining user info from the identity provider.
+func (s *APIV1Service) handleUserLogin(ctx context.Context, userInfo *idp.IdentityProviderUserInfo) (*v1pb.User, error) {
 	email := userInfo.Identifier
 	if !util.ValidateEmail(email) {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid email address")

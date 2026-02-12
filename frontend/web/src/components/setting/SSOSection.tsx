@@ -22,7 +22,6 @@ const SSOSection = () => {
   const workspaceStore = useWorkspaceStore();
   const [identityProviderList, setIdentityProviderList] = useState<IdentityProvider[]>([]);
   const [editState, setEditState] = useState<EditState>({ open: false, identityProvider: undefined });
-  const isSSOFeatureEnabled = workspaceStore.checkFeatureAvailable(FeatureType.SSO);
 
   useEffect(() => {
     fetchIdentityProviderList();
@@ -73,7 +72,6 @@ const SSOSection = () => {
           </div>
           <Button
             variant="outline"
-            disabled={!isSSOFeatureEnabled}
             onClick={() =>
               setEditState({
                 open: true,

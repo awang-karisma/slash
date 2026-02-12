@@ -93,6 +93,12 @@ func init() {
 	viper.SetDefault("driver", "sqlite")
 	viper.SetDefault("port", 8082)
 
+	// SSO configuration defaults
+	viper.SetDefault("sso.title", "SSO")
+	viper.SetDefault("sso.identifier_field", "email")
+	viper.SetDefault("sso.display_name_field", "name")
+	viper.SetDefault("sso.scopes", "openid profile email")
+
 	rootCmd.PersistentFlags().String("mode", "dev", `mode of server, can be "prod" or "dev"`)
 	rootCmd.PersistentFlags().String("addr", "", "address of server")
 	rootCmd.PersistentFlags().Int("port", 8082, "port of server")

@@ -10,6 +10,7 @@ import (
 
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/sso"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -77,6 +78,25 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			}
 		}
 	}
+
+	// Append environment-based identity provider if configured
+	if sso.HasSSO() {
+		envIDP, err := sso.GetEnvIdentityProvider(ctx)
+		if err != nil {
+			// Skip if we can't load the env identity provider
+		} else {
+			envIDPV1pb := convertIdentityProviderFromStore(envIDP)
+			// Mask client secret for non-admin users
+			if currentUser == nil || currentUser.Role != store.RoleAdmin {
+				oauth2Config := envIDPV1pb.Config.GetOauth2()
+				if oauth2Config != nil {
+					oauth2Config.ClientSecret = ""
+				}
+			}
+			workspaceSetting.IdentityProviders = append(workspaceSetting.IdentityProviders, envIDPV1pb)
+		}
+	}
+
 	return workspaceSetting, nil
 }
 
