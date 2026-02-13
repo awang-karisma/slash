@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { GetURLMetadataResponse } from "@/types/proto/api/v1/shortcut_service";
 
@@ -9,16 +9,8 @@ interface UseUrlMetadataReturn {
 }
 
 export function useUrlMetadata(): UseUrlMetadataReturn {
-  const loadingRef = useRef(false);
-  const errorRef = useRef<string | null>(null);
-
-  const setLoading = (value: boolean) => {
-    loadingRef.current = value;
-  };
-
-  const setError = (value: string | null) => {
-    errorRef.current = value;
-  };
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchMetadata = useCallback(async (url: string, options?: { signal?: AbortSignal }): Promise<GetURLMetadataResponse | null> => {
     if (!url) {
@@ -86,11 +78,7 @@ export function useUrlMetadata(): UseUrlMetadataReturn {
 
   return {
     fetchMetadata,
-    get loading() {
-      return loadingRef.current;
-    },
-    get error() {
-      return errorRef.current;
-    },
+    loading,
+    error,
   };
 }
