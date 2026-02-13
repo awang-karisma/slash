@@ -21,8 +21,8 @@ import (
 const (
 	// maxResponseSize is the maximum response size in bytes (10MB).
 	maxResponseSize = 10 * 1024 * 1024
-	// fetchTimeout is the timeout for fetching a URL.
-	fetchTimeout = 10 * time.Second
+	// defaultFetchTimeout is the default timeout for fetching a URL.
+	defaultFetchTimeout = 10 * time.Second
 	// maxRedirects is the maximum number of redirects to follow.
 	maxRedirects = 5
 )
@@ -53,18 +53,23 @@ func (*APIV1Service) GetURLMetadata(ctx context.Context, request *v1pb.GetURLMet
 	}
 
 	// Fetch the URL
-	resp, err := fetchURLWithRedirects(ctx, request.Url)
+	resp, err := fetchURLWithRedirects(ctx, request.Url, defaultFetchTimeout)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch URL: %v", err)
 	}
 	defer resp.Body.Close()
+
+	// Check HTTP status code
+	if !isSuccessStatusCode(resp.StatusCode) {
+		return nil, status.Errorf(codes.InvalidArgument, "URL returned error status: %d %s", resp.StatusCode, http.StatusText(resp.StatusCode))
+	}
 
 	// Check content type
 	contentType := resp.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/html") {
 		// Still try to parse if it's HTML-like
 		if !strings.Contains(contentType, "html") {
-			return nil, status.Errorf(codes.InvalidArgument, "URL does not point to an HTML document")
+			return nil, status.Errorf(codes.InvalidArgument, "URL does not point to an HTML document (content-type: %s)", contentType)
 		}
 	}
 
@@ -93,6 +98,11 @@ func (*APIV1Service) GetURLMetadata(ctx context.Context, request *v1pb.GetURLMet
 	}, nil
 }
 
+// isSuccessStatusCode checks if the status code is a success (2xx).
+func isSuccessStatusCode(statusCode int) bool {
+	return statusCode >= 200 && statusCode < 300
+}
+
 // isPrivateIP checks if an IP is a private IP address.
 func isPrivateIP(ip net.IP) bool {
 	// Check for IPv4 private ranges
@@ -105,10 +115,10 @@ func isPrivateIP(ip net.IP) bool {
 	return ip[0] == 0xfc || ip[0] == 0xfd
 }
 
-// fetchURLWithRedirects fetches a URL following redirects.
-func fetchURLWithRedirects(ctx context.Context, targetURL string) (*http.Response, error) {
+// fetchURLWithRedirects fetches a URL following redirects with configurable timeout.
+func fetchURLWithRedirects(ctx context.Context, targetURL string, timeout time.Duration) (*http.Response, error) {
 	client := &http.Client{
-		Timeout: fetchTimeout,
+		Timeout: timeout,
 		CheckRedirect: func(_ *http.Request, via []*http.Request) error {
 			if len(via) >= maxRedirects {
 				return errors.New("too many redirects")
@@ -127,6 +137,10 @@ func fetchURLWithRedirects(ctx context.Context, targetURL string) (*http.Respons
 
 	resp, err := client.Do(req)
 	if err != nil {
+		// Check if it's a timeout error
+		if strings.Contains(err.Error(), "timeout") || strings.Contains(err.Error(), "context deadline exceeded") {
+			return nil, status.Errorf(codes.DeadlineExceeded, "request timed out after %v: %s", timeout, err.Error())
+		}
 		return nil, err
 	}
 

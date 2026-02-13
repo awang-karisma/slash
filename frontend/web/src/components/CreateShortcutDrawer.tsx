@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { isUndefined, uniq } from "lodash-es";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const loadingState = useLoading(!isCreating);
   const requestState = useLoading(false);
   const { fetchMetadata, loading: metadataLoading } = useUrlMetadata();
-  const [urlInputTimeout, setUrlInputTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const setPartialState = (partialState: Partial<State>) => {
     setState({
@@ -113,15 +113,22 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       }),
     });
 
-    // Debounce metadata fetch
-    if (urlInputTimeout) {
-      clearTimeout(urlInputTimeout);
+    // Cancel any pending fetch and start a new one
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
+
     if (url && isValidUrl(url)) {
-      const timeout = setTimeout(() => {
-        fetchAndPrefillMetadata(url);
-      }, 1000);
-      setUrlInputTimeout(timeout);
+      // Debounce: wait 500ms before fetching
+      const timeoutId = setTimeout(() => {
+        const controller = new AbortController();
+        abortControllerRef.current = controller;
+        fetchAndPrefillMetadata(url, { signal: controller.signal });
+      }, 500);
+
+      // Store timeout cleanup
+      return () => clearTimeout(timeoutId);
     }
   };
 
@@ -136,8 +143,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   };
 
   // Fetch metadata and prefill form fields
-  const fetchAndPrefillMetadata = async (url: string) => {
-    const metadata = await fetchMetadata(url);
+  const fetchAndPrefillMetadata = async (url: string, options?: { signal?: AbortSignal }) => {
+    const metadata = await fetchMetadata(url, options);
     if (metadata) {
       // Only prefill if fields are empty to respect user edits
       setPartialState({

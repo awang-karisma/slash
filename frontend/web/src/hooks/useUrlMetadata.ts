@@ -1,17 +1,26 @@
-import { useState, useCallback } from "react";
+import { useCallback, useRef } from "react";
+import { toast } from "sonner";
 import { GetURLMetadataResponse } from "@/types/proto/api/v1/shortcut_service";
 
 interface UseUrlMetadataReturn {
-  fetchMetadata: (url: string) => Promise<GetURLMetadataResponse | null>;
+  fetchMetadata: (url: string, options?: { signal?: AbortSignal }) => Promise<GetURLMetadataResponse | null>;
   loading: boolean;
   error: string | null;
 }
 
 export function useUrlMetadata(): UseUrlMetadataReturn {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const loadingRef = useRef(false);
+  const errorRef = useRef<string | null>(null);
 
-  const fetchMetadata = useCallback(async (url: string): Promise<GetURLMetadataResponse | null> => {
+  const setLoading = (value: boolean) => {
+    loadingRef.current = value;
+  };
+
+  const setError = (value: string | null) => {
+    errorRef.current = value;
+  };
+
+  const fetchMetadata = useCallback(async (url: string, options?: { signal?: AbortSignal }): Promise<GetURLMetadataResponse | null> => {
     if (!url) {
       return null;
     }
@@ -20,10 +29,13 @@ export function useUrlMetadata(): UseUrlMetadataReturn {
     try {
       new URL(url);
     } catch {
-      setError("Invalid URL format");
+      const errorMsg = "Invalid URL format";
+      setError(errorMsg);
+      toast.error(errorMsg);
       return null;
     }
 
+    // Don't show loading toast, just update state
     setLoading(true);
     setError(null);
 
@@ -34,23 +46,51 @@ export function useUrlMetadata(): UseUrlMetadataReturn {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ url }),
+        signal: options?.signal,
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to fetch metadata (${response.status})`);
+        let errorMessage = `Failed to fetch metadata (${response.status})`;
+
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {
+          // Ignore JSON parse errors
+        }
+
+        setError(errorMessage);
+        toast.error(errorMessage);
+        return null;
       }
 
       const data = await response.json();
       return data as GetURLMetadataResponse;
     } catch (err) {
+      // Handle abort errors gracefully
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setLoading(false);
+        return null;
+      }
+
       const message = err instanceof Error ? err.message : "Failed to fetch URL metadata";
       setError(message);
+      toast.error(message);
       return null;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  return { fetchMetadata, loading, error };
+  return {
+    fetchMetadata,
+    get loading() {
+      return loadingRef.current;
+    },
+    get error() {
+      return errorRef.current;
+    },
+  };
 }
