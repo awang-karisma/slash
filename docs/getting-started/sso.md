@@ -35,3 +35,78 @@ Slash will use the mapping to import the user profile fields when creating new a
 
 - **Identifier** is the field name of primary email in 3rd-party user info;
 - **Display name** is the field name of display name in 3rd-party user info (optional);
+
+## Configure SSO via Environment Variables
+
+You can configure SSO providers using environment variables instead of the admin UI. This is useful for containerized deployments or when you want to manage SSO configuration as code.
+
+### Quick Setup
+
+For OAuth2 providers that support OpenID Connect (OIDC), you only need three environment variables:
+
+```bash
+SLASH_SSO_0_CLIENT_ID=your-client-id
+SLASH_SSO_0_CLIENT_SECRET=your-client-secret
+SLASH_SSO_0_ISSUER_URL=https://your-idp.com
+```
+
+Slash will automatically discover the OAuth endpoints from the issuer URL's `.well-known/openid-configuration`.
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `SLASH_SSO_{INDEX}_CLIENT_ID` | Yes | OAuth2 client ID |
+| `SLASH_SSO_{INDEX}_CLIENT_SECRET` | Yes | OAuth2 client secret |
+| `SLASH_SSO_{INDEX}_ISSUER_URL` | Yes | OIDC issuer URL (e.g., `https://accounts.google.com`) |
+| `SLASH_SSO_{INDEX}_TITLE` | No | Display name (default: `SSO {INDEX}`) |
+| `SLASH_SSO_{INDEX}_IDENTIFIER_FIELD` | No | User info field for email (default: `email`) |
+| `SLASH_SSO_{INDEX}_DISPLAY_NAME_FIELD` | No | User info field for name (default: `name`) |
+| `SLASH_SSO_{INDEX}_SCOPES` | No | OAuth scopes, space-separated (default: `openid profile email`) |
+
+**Note:** `{INDEX}` is the provider index starting from 0. Use `0` for the first provider, `1` for the second, etc.
+
+### Auto-discovery
+
+When `SLASH_SSO_{INDEX}_ISSUER_URL` is set, Slash automatically fetches the following from `{ISSUER_URL}/.well-known/openid-configuration`:
+
+- Authorization endpoint
+- Token endpoint
+- User info endpoint
+
+You don't need to configure these manually unless your provider requires non-standard endpoints.
+
+### Docker Compose Example
+
+```yaml
+services:
+  slash:
+    image: yourselfhosted/slash:latest
+    environment:
+      # SSO via Google
+      - SLASH_SSO_0_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+      - SLASH_SSO_0_CLIENT_SECRET=your-google-client-secret
+      - SLASH_SSO_0_ISSUER_URL=https://accounts.google.com
+      - SLASH_SSO_0_TITLE=Google SSO
+```
+
+### Multiple Providers
+
+You can configure multiple SSO providers by incrementing the index:
+
+```bash
+# First provider (Google)
+SLASH_SSO_0_CLIENT_ID=google-client-id
+SLASH_SSO_0_CLIENT_SECRET=google-client-secret
+SLASH_SSO_0_ISSUER_URL=https://accounts.google.com
+
+# Second provider (Okta)
+SLASH_SSO_1_CLIENT_ID=okta-client-id
+SLASH_SSO_1_CLIENT_SECRET=okta-client-secret
+SLASH_SSO_1_ISSUER_URL=https://your-org.okta.com
+SLASH_SSO_1_TITLE=Okta SSO
+```
+
+### Priority
+
+When SSO providers are configured via environment variables, they take precedence over database providers for faster authentication. If any required environment variable is missing, Slash will fall back to using database-configured SSO providers.

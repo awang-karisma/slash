@@ -4,13 +4,13 @@
 
 🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/firefox/addon/your-slash/)
 
-Getting started with Slash's [Shortcuts](https://github.com/yourselfhosted/slash/blob/main/docs/getting-started/shortcuts.md) and [Collections](https://github.com/yourselfhosted/slash/blob/main/docs/getting-started/collections.md).
-
-[👉 Join our Discord 💬](https://discord.gg/QZqUuUAhDV)
+Getting started with Slash's [Shortcuts](https://github.com/awang-karisma/slash/blob/main/docs/getting-started/shortcuts.md), [Collections](https://github.com/awang-karisma/slash/blob/main/docs/getting-started/collections.md), and [SSO](https://github.com/awang-karisma/slash/blob/main/docs/getting-started/sso.md).
 
 <p>
-  <a href="https://hub.docker.com/r/yourselfhosted/slash"><img alt="Docker pull" src="https://img.shields.io/docker/pulls/yourselfhosted/slash.svg"/></a>
-  <a href="https://discord.gg/QZqUuUAhDV"><img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&logoColor=f5f5f5" /></a>
+  <a href="https://github.com/awang-karisma/slash"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/awang-karisma/slash/build-and-push-image.yml"/></a>
+  <a href="https://github.com/awang-karisma/slash"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/awang-karisma/slash/build-and-push-test-image.yml"/></a>
+  <a href="https://github.com/awang-karisma/slash"><img alt="License" src="https://img.shields.io/github/license/awang-karisma/slash"/></a>
+  <a href="https://github.com/awang-karisma/slash/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/awang-karisma/slash"/></a>
 </p>
 
 ![demo](./docs/assets/demo.png)
@@ -33,10 +33,26 @@ That's why we developed Slash, a solution that transforms these links into easil
 ## Deploy with Docker in seconds
 
 ```bash
-docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash yourselfhosted/slash:latest
+docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash ghcr.io/awang-karisma/slash:nightly
 ```
 
-Learn more in [Self-hosting Slash with Docker](https://github.com/yourselfhosted/slash/blob/main/docs/install.md).
+Learn more in [Self-hosting Slash with Docker](https://github.com/awang-karisma/slash/blob/main/docs/install.md).
+
+## Fork Differences
+
+This fork includes the following modifications from the original Slash repository:
+
+### License Mechanism Removed
+- All premium features are now available without any licensing requirements
+- Users can access the full feature set without limitation
+
+### SSO Implementation
+- Added Single Sign-On (SSO) support
+- Note: SSO functionality is currently untested
+
+### Metadata Fetching
+- Implemented automatic metadata fetching for shortcuts
+- Improved link preview and information retrieval
 
 ## Browser Extension
 
@@ -44,7 +60,7 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 
 ![browser-extension-example](./docs/assets/browser-extension-example.png)
 
-Learn more in [The Browser Extension of Slash](https://github.com/yourselfhosted/slash/blob/main/docs/install-browser-extension.md).
+Learn more in [The Browser Extension of Slash](https://github.com/awang-karisma/slash/blob/main/docs/install-browser-extension.md).
 
 ### Chromium based browsers
 
