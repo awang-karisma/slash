@@ -290,9 +290,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                   onChange={handleLinkInputChange}
                   className={metadataLoading ? "pr-10" : ""}
                 />
-                {metadataLoading && (
-                  <Icon.Loader className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
-                )}
+                {metadataLoading && <Icon.Loader className="absolute right-3 top-3 w-4 h-4 animate-spin text-muted-foreground" />}
               </div>
             </div>
             <div className="space-y-2">
