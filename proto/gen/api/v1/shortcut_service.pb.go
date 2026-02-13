@@ -569,27 +569,27 @@ func (x *GetShortcutAnalyticsResponse) GetBrowsers() []*GetShortcutAnalyticsResp
 	return nil
 }
 
-type GetUrlMetadataRequest struct {
+type GetURLMetadataRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUrlMetadataRequest) Reset() {
-	*x = GetUrlMetadataRequest{}
+func (x *GetURLMetadataRequest) Reset() {
+	*x = GetURLMetadataRequest{}
 	mi := &file_api_v1_shortcut_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUrlMetadataRequest) String() string {
+func (x *GetURLMetadataRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUrlMetadataRequest) ProtoMessage() {}
+func (*GetURLMetadataRequest) ProtoMessage() {}
 
-func (x *GetUrlMetadataRequest) ProtoReflect() protoreflect.Message {
+func (x *GetURLMetadataRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_v1_shortcut_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -601,19 +601,19 @@ func (x *GetUrlMetadataRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUrlMetadataRequest.ProtoReflect.Descriptor instead.
-func (*GetUrlMetadataRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetURLMetadataRequest.ProtoReflect.Descriptor instead.
+func (*GetURLMetadataRequest) Descriptor() ([]byte, []int) {
 	return file_api_v1_shortcut_service_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *GetUrlMetadataRequest) GetUrl() string {
+func (x *GetURLMetadataRequest) GetUrl() string {
 	if x != nil {
 		return x.Url
 	}
 	return ""
 }
 
-type GetUrlMetadataResponse struct {
+type GetURLMetadataResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
@@ -625,20 +625,20 @@ type GetUrlMetadataResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUrlMetadataResponse) Reset() {
-	*x = GetUrlMetadataResponse{}
+func (x *GetURLMetadataResponse) Reset() {
+	*x = GetURLMetadataResponse{}
 	mi := &file_api_v1_shortcut_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUrlMetadataResponse) String() string {
+func (x *GetURLMetadataResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUrlMetadataResponse) ProtoMessage() {}
+func (*GetURLMetadataResponse) ProtoMessage() {}
 
-func (x *GetUrlMetadataResponse) ProtoReflect() protoreflect.Message {
+func (x *GetURLMetadataResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_v1_shortcut_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -650,47 +650,47 @@ func (x *GetUrlMetadataResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUrlMetadataResponse.ProtoReflect.Descriptor instead.
-func (*GetUrlMetadataResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetURLMetadataResponse.ProtoReflect.Descriptor instead.
+func (*GetURLMetadataResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_shortcut_service_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *GetUrlMetadataResponse) GetTitle() string {
+func (x *GetURLMetadataResponse) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-func (x *GetUrlMetadataResponse) GetDescription() string {
+func (x *GetURLMetadataResponse) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *GetUrlMetadataResponse) GetImage() string {
+func (x *GetURLMetadataResponse) GetImage() string {
 	if x != nil {
 		return x.Image
 	}
 	return ""
 }
 
-func (x *GetUrlMetadataResponse) GetSiteName() string {
+func (x *GetURLMetadataResponse) GetSiteName() string {
 	if x != nil {
 		return x.SiteName
 	}
 	return ""
 }
 
-func (x *GetUrlMetadataResponse) GetUrl() string {
+func (x *GetURLMetadataResponse) GetUrl() string {
 	if x != nil {
 		return x.Url
 	}
 	return ""
 }
 
-func (x *GetUrlMetadataResponse) GetFavicon() string {
+func (x *GetURLMetadataResponse) GetFavicon() string {
 	if x != nil {
 		return x.Favicon
 	}
@@ -863,9 +863,9 @@ const file_api_v1_shortcut_service_proto_rawDesc = "" +
 	"\rAnalyticsItem\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05count\x18\x02 \x01(\x05R\x05count\")\n" +
-	"\x15GetUrlMetadataRequest\x12\x10\n" +
+	"\x15GetURLMetadataRequest\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\"\xaf\x01\n" +
-	"\x16GetUrlMetadataResponse\x12\x14\n" +
+	"\x16GetURLMetadataResponse\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x14\n" +
 	"\x05image\x18\x03 \x01(\tR\x05image\x12\x1b\n" +
@@ -880,7 +880,7 @@ const file_api_v1_shortcut_service_proto_rawDesc = "" +
 	"\x0eUpdateShortcut\x12#.slash.api.v1.UpdateShortcutRequest\x1a\x16.slash.api.v1.Shortcut\"H\xdaA\x14shortcut,update_mask\x82\xd3\xe4\x93\x02+:\bshortcut\x1a\x1f/api/v1/shortcuts/{shortcut.id}\x12r\n" +
 	"\x0eDeleteShortcut\x12#.slash.api.v1.DeleteShortcutRequest\x1a\x16.google.protobuf.Empty\"#\xdaA\x02id\x82\xd3\xe4\x93\x02\x18*\x16/api/v1/shortcuts/{id}\x12\x9c\x01\n" +
 	"\x14GetShortcutAnalytics\x12).slash.api.v1.GetShortcutAnalyticsRequest\x1a*.slash.api.v1.GetShortcutAnalyticsResponse\"-\xdaA\x02id\x82\xd3\xe4\x93\x02\"\x12 /api/v1/shortcuts/{id}/analytics\x12\x87\x01\n" +
-	"\x0eGetUrlMetadata\x12#.slash.api.v1.GetUrlMetadataRequest\x1a$.slash.api.v1.GetUrlMetadataResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/v1/shortcuts:fetchMetadataB\xb2\x01\n" +
+	"\x0eGetURLMetadata\x12#.slash.api.v1.GetURLMetadataRequest\x1a$.slash.api.v1.GetURLMetadataResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/v1/shortcuts:fetchMetadataB\xb2\x01\n" +
 	"\x10com.slash.api.v1B\x14ShortcutServiceProtoP\x01Z6github.com/yourselfhosted/slash/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
 
 var (
@@ -907,8 +907,8 @@ var file_api_v1_shortcut_service_proto_goTypes = []any{
 	(*DeleteShortcutRequest)(nil),                      // 7: slash.api.v1.DeleteShortcutRequest
 	(*GetShortcutAnalyticsRequest)(nil),                // 8: slash.api.v1.GetShortcutAnalyticsRequest
 	(*GetShortcutAnalyticsResponse)(nil),               // 9: slash.api.v1.GetShortcutAnalyticsResponse
-	(*GetUrlMetadataRequest)(nil),                      // 10: slash.api.v1.GetUrlMetadataRequest
-	(*GetUrlMetadataResponse)(nil),                     // 11: slash.api.v1.GetUrlMetadataResponse
+	(*GetURLMetadataRequest)(nil),                      // 10: slash.api.v1.GetURLMetadataRequest
+	(*GetURLMetadataResponse)(nil),                     // 11: slash.api.v1.GetURLMetadataResponse
 	(*Shortcut_OpenGraphMetadata)(nil),                 // 12: slash.api.v1.Shortcut.OpenGraphMetadata
 	(*GetShortcutAnalyticsResponse_AnalyticsItem)(nil), // 13: slash.api.v1.GetShortcutAnalyticsResponse.AnalyticsItem
 	(*timestamppb.Timestamp)(nil),                      // 14: google.protobuf.Timestamp
@@ -935,7 +935,7 @@ var file_api_v1_shortcut_service_proto_depIdxs = []int32{
 	6,  // 15: slash.api.v1.ShortcutService.UpdateShortcut:input_type -> slash.api.v1.UpdateShortcutRequest
 	7,  // 16: slash.api.v1.ShortcutService.DeleteShortcut:input_type -> slash.api.v1.DeleteShortcutRequest
 	8,  // 17: slash.api.v1.ShortcutService.GetShortcutAnalytics:input_type -> slash.api.v1.GetShortcutAnalyticsRequest
-	10, // 18: slash.api.v1.ShortcutService.GetUrlMetadata:input_type -> slash.api.v1.GetUrlMetadataRequest
+	10, // 18: slash.api.v1.ShortcutService.GetURLMetadata:input_type -> slash.api.v1.GetURLMetadataRequest
 	2,  // 19: slash.api.v1.ShortcutService.ListShortcuts:output_type -> slash.api.v1.ListShortcutsResponse
 	0,  // 20: slash.api.v1.ShortcutService.GetShortcut:output_type -> slash.api.v1.Shortcut
 	0,  // 21: slash.api.v1.ShortcutService.GetShortcutByName:output_type -> slash.api.v1.Shortcut
@@ -943,7 +943,7 @@ var file_api_v1_shortcut_service_proto_depIdxs = []int32{
 	0,  // 23: slash.api.v1.ShortcutService.UpdateShortcut:output_type -> slash.api.v1.Shortcut
 	17, // 24: slash.api.v1.ShortcutService.DeleteShortcut:output_type -> google.protobuf.Empty
 	9,  // 25: slash.api.v1.ShortcutService.GetShortcutAnalytics:output_type -> slash.api.v1.GetShortcutAnalyticsResponse
-	11, // 26: slash.api.v1.ShortcutService.GetUrlMetadata:output_type -> slash.api.v1.GetUrlMetadataResponse
+	11, // 26: slash.api.v1.ShortcutService.GetURLMetadata:output_type -> slash.api.v1.GetURLMetadataResponse
 	19, // [19:27] is the sub-list for method output_type
 	11, // [11:19] is the sub-list for method input_type
 	11, // [11:11] is the sub-list for extension type_name

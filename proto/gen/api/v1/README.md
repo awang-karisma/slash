@@ -54,8 +54,8 @@
     - [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v1-GetShortcutAnalyticsResponse-AnalyticsItem)
     - [GetShortcutByNameRequest](#slash-api-v1-GetShortcutByNameRequest)
     - [GetShortcutRequest](#slash-api-v1-GetShortcutRequest)
-    - [GetUrlMetadataRequest](#slash-api-v1-GetUrlMetadataRequest)
-    - [GetUrlMetadataResponse](#slash-api-v1-GetUrlMetadataResponse)
+    - [GetURLMetadataRequest](#slash-api-v1-GetURLMetadataRequest)
+    - [GetURLMetadataResponse](#slash-api-v1-GetURLMetadataResponse)
     - [ListShortcutsRequest](#slash-api-v1-ListShortcutsRequest)
     - [ListShortcutsResponse](#slash-api-v1-ListShortcutsResponse)
     - [Shortcut](#slash-api-v1-Shortcut)
@@ -740,9 +740,9 @@
 
 
 
-<a name="slash-api-v1-GetUrlMetadataRequest"></a>
+<a name="slash-api-v1-GetURLMetadataRequest"></a>
 
-### GetUrlMetadataRequest
+### GetURLMetadataRequest
 
 
 
@@ -755,9 +755,9 @@
 
 
 
-<a name="slash-api-v1-GetUrlMetadataResponse"></a>
+<a name="slash-api-v1-GetURLMetadataResponse"></a>
 
-### GetUrlMetadataResponse
+### GetURLMetadataResponse
 
 
 
@@ -879,7 +879,7 @@
 | UpdateShortcut | [UpdateShortcutRequest](#slash-api-v1-UpdateShortcutRequest) | [Shortcut](#slash-api-v1-Shortcut) | UpdateShortcut updates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v1-DeleteShortcutRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteShortcut deletes a shortcut by name. |
 | GetShortcutAnalytics | [GetShortcutAnalyticsRequest](#slash-api-v1-GetShortcutAnalyticsRequest) | [GetShortcutAnalyticsResponse](#slash-api-v1-GetShortcutAnalyticsResponse) | GetShortcutAnalytics returns the analytics for a shortcut. |
-| GetUrlMetadata | [GetUrlMetadataRequest](#slash-api-v1-GetUrlMetadataRequest) | [GetUrlMetadataResponse](#slash-api-v1-GetUrlMetadataResponse) | GetUrlMetadata fetches social metadata from a URL. |
+| GetURLMetadata | [GetURLMetadataRequest](#slash-api-v1-GetURLMetadataRequest) | [GetURLMetadataResponse](#slash-api-v1-GetURLMetadataResponse) | GetURLMetadata fetches social metadata from a URL. |
 
  
 

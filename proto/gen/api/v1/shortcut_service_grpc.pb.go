@@ -27,7 +27,7 @@ const (
 	ShortcutService_UpdateShortcut_FullMethodName       = "/slash.api.v1.ShortcutService/UpdateShortcut"
 	ShortcutService_DeleteShortcut_FullMethodName       = "/slash.api.v1.ShortcutService/DeleteShortcut"
 	ShortcutService_GetShortcutAnalytics_FullMethodName = "/slash.api.v1.ShortcutService/GetShortcutAnalytics"
-	ShortcutService_GetUrlMetadata_FullMethodName       = "/slash.api.v1.ShortcutService/GetUrlMetadata"
+	ShortcutService_GetURLMetadata_FullMethodName       = "/slash.api.v1.ShortcutService/GetURLMetadata"
 )
 
 // ShortcutServiceClient is the client API for ShortcutService service.
@@ -48,8 +48,8 @@ type ShortcutServiceClient interface {
 	DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// GetShortcutAnalytics returns the analytics for a shortcut.
 	GetShortcutAnalytics(ctx context.Context, in *GetShortcutAnalyticsRequest, opts ...grpc.CallOption) (*GetShortcutAnalyticsResponse, error)
-	// GetUrlMetadata fetches social metadata from a URL.
-	GetUrlMetadata(ctx context.Context, in *GetUrlMetadataRequest, opts ...grpc.CallOption) (*GetUrlMetadataResponse, error)
+	// GetURLMetadata fetches social metadata from a URL.
+	GetURLMetadata(ctx context.Context, in *GetURLMetadataRequest, opts ...grpc.CallOption) (*GetURLMetadataResponse, error)
 }
 
 type shortcutServiceClient struct {
@@ -130,10 +130,10 @@ func (c *shortcutServiceClient) GetShortcutAnalytics(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *shortcutServiceClient) GetUrlMetadata(ctx context.Context, in *GetUrlMetadataRequest, opts ...grpc.CallOption) (*GetUrlMetadataResponse, error) {
+func (c *shortcutServiceClient) GetURLMetadata(ctx context.Context, in *GetURLMetadataRequest, opts ...grpc.CallOption) (*GetURLMetadataResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUrlMetadataResponse)
-	err := c.cc.Invoke(ctx, ShortcutService_GetUrlMetadata_FullMethodName, in, out, cOpts...)
+	out := new(GetURLMetadataResponse)
+	err := c.cc.Invoke(ctx, ShortcutService_GetURLMetadata_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +158,8 @@ type ShortcutServiceServer interface {
 	DeleteShortcut(context.Context, *DeleteShortcutRequest) (*emptypb.Empty, error)
 	// GetShortcutAnalytics returns the analytics for a shortcut.
 	GetShortcutAnalytics(context.Context, *GetShortcutAnalyticsRequest) (*GetShortcutAnalyticsResponse, error)
-	// GetUrlMetadata fetches social metadata from a URL.
-	GetUrlMetadata(context.Context, *GetUrlMetadataRequest) (*GetUrlMetadataResponse, error)
+	// GetURLMetadata fetches social metadata from a URL.
+	GetURLMetadata(context.Context, *GetURLMetadataRequest) (*GetURLMetadataResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
 }
 
@@ -191,8 +191,8 @@ func (UnimplementedShortcutServiceServer) DeleteShortcut(context.Context, *Delet
 func (UnimplementedShortcutServiceServer) GetShortcutAnalytics(context.Context, *GetShortcutAnalyticsRequest) (*GetShortcutAnalyticsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetShortcutAnalytics not implemented")
 }
-func (UnimplementedShortcutServiceServer) GetUrlMetadata(context.Context, *GetUrlMetadataRequest) (*GetUrlMetadataResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetUrlMetadata not implemented")
+func (UnimplementedShortcutServiceServer) GetURLMetadata(context.Context, *GetURLMetadataRequest) (*GetURLMetadataResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetURLMetadata not implemented")
 }
 func (UnimplementedShortcutServiceServer) mustEmbedUnimplementedShortcutServiceServer() {}
 func (UnimplementedShortcutServiceServer) testEmbeddedByValue()                         {}
@@ -341,20 +341,20 @@ func _ShortcutService_GetShortcutAnalytics_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShortcutService_GetUrlMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUrlMetadataRequest)
+func _ShortcutService_GetURLMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetURLMetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShortcutServiceServer).GetUrlMetadata(ctx, in)
+		return srv.(ShortcutServiceServer).GetURLMetadata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ShortcutService_GetUrlMetadata_FullMethodName,
+		FullMethod: ShortcutService_GetURLMetadata_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortcutServiceServer).GetUrlMetadata(ctx, req.(*GetUrlMetadataRequest))
+		return srv.(ShortcutServiceServer).GetURLMetadata(ctx, req.(*GetURLMetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -395,8 +395,8 @@ var ShortcutService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ShortcutService_GetShortcutAnalytics_Handler,
 		},
 		{
-			MethodName: "GetUrlMetadata",
-			Handler:    _ShortcutService_GetUrlMetadata_Handler,
+			MethodName: "GetURLMetadata",
+			Handler:    _ShortcutService_GetURLMetadata_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

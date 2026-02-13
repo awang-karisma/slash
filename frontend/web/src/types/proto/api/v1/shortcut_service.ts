@@ -77,11 +77,11 @@ export interface GetShortcutAnalyticsResponse_AnalyticsItem {
   count: number;
 }
 
-export interface GetUrlMetadataRequest {
+export interface GetURLMetadataRequest {
   url: string;
 }
 
-export interface GetUrlMetadataResponse {
+export interface GetURLMetadataResponse {
   title: string;
   description: string;
   image: string;
@@ -855,22 +855,22 @@ export const GetShortcutAnalyticsResponse_AnalyticsItem: MessageFns<GetShortcutA
   },
 };
 
-function createBaseGetUrlMetadataRequest(): GetUrlMetadataRequest {
+function createBaseGetURLMetadataRequest(): GetURLMetadataRequest {
   return { url: "" };
 }
 
-export const GetUrlMetadataRequest: MessageFns<GetUrlMetadataRequest> = {
-  encode(message: GetUrlMetadataRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetURLMetadataRequest: MessageFns<GetURLMetadataRequest> = {
+  encode(message: GetURLMetadataRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.url !== "") {
       writer.uint32(10).string(message.url);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetUrlMetadataRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetURLMetadataRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUrlMetadataRequest();
+    const message = createBaseGetURLMetadataRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -891,22 +891,22 @@ export const GetUrlMetadataRequest: MessageFns<GetUrlMetadataRequest> = {
     return message;
   },
 
-  create(base?: DeepPartial<GetUrlMetadataRequest>): GetUrlMetadataRequest {
-    return GetUrlMetadataRequest.fromPartial(base ?? {});
+  create(base?: DeepPartial<GetURLMetadataRequest>): GetURLMetadataRequest {
+    return GetURLMetadataRequest.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<GetUrlMetadataRequest>): GetUrlMetadataRequest {
-    const message = createBaseGetUrlMetadataRequest();
+  fromPartial(object: DeepPartial<GetURLMetadataRequest>): GetURLMetadataRequest {
+    const message = createBaseGetURLMetadataRequest();
     message.url = object.url ?? "";
     return message;
   },
 };
 
-function createBaseGetUrlMetadataResponse(): GetUrlMetadataResponse {
+function createBaseGetURLMetadataResponse(): GetURLMetadataResponse {
   return { title: "", description: "", image: "", siteName: "", url: "", favicon: "" };
 }
 
-export const GetUrlMetadataResponse: MessageFns<GetUrlMetadataResponse> = {
-  encode(message: GetUrlMetadataResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetURLMetadataResponse: MessageFns<GetURLMetadataResponse> = {
+  encode(message: GetURLMetadataResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -928,10 +928,10 @@ export const GetUrlMetadataResponse: MessageFns<GetUrlMetadataResponse> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetUrlMetadataResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetURLMetadataResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUrlMetadataResponse();
+    const message = createBaseGetURLMetadataResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -992,11 +992,11 @@ export const GetUrlMetadataResponse: MessageFns<GetUrlMetadataResponse> = {
     return message;
   },
 
-  create(base?: DeepPartial<GetUrlMetadataResponse>): GetUrlMetadataResponse {
-    return GetUrlMetadataResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<GetURLMetadataResponse>): GetURLMetadataResponse {
+    return GetURLMetadataResponse.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<GetUrlMetadataResponse>): GetUrlMetadataResponse {
-    const message = createBaseGetUrlMetadataResponse();
+  fromPartial(object: DeepPartial<GetURLMetadataResponse>): GetURLMetadataResponse {
+    const message = createBaseGetURLMetadataResponse();
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.image = object.image ?? "";
@@ -1303,12 +1303,12 @@ export const ShortcutServiceDefinition = {
         },
       },
     },
-    /** GetUrlMetadata fetches social metadata from a URL. */
-    getUrlMetadata: {
-      name: "GetUrlMetadata",
-      requestType: GetUrlMetadataRequest,
+    /** GetURLMetadata fetches social metadata from a URL. */
+    getURLMetadata: {
+      name: "GetURLMetadata",
+      requestType: GetURLMetadataRequest,
       requestStream: false,
-      responseType: GetUrlMetadataResponse,
+      responseType: GetURLMetadataResponse,
       responseStream: false,
       options: {
         _unknownFields: {

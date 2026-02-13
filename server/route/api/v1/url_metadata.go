@@ -28,7 +28,7 @@ const (
 )
 
 // GetURLMetadata fetches social metadata from a URL.
-func GetURLMetadata(ctx context.Context, request *v1pb.GetUrlMetadataRequest) (*v1pb.GetUrlMetadataResponse, error) {
+func (*APIV1Service) GetURLMetadata(ctx context.Context, request *v1pb.GetURLMetadataRequest) (*v1pb.GetURLMetadataResponse, error) {
 	// Validate URL
 	parsedURL, err := url.Parse(request.Url)
 	if err != nil {
@@ -83,7 +83,7 @@ func GetURLMetadata(ctx context.Context, request *v1pb.GetUrlMetadataRequest) (*
 	// Get final URL after redirects
 	finalURL := resp.Request.URL.String()
 
-	return &v1pb.GetUrlMetadataResponse{
+	return &v1pb.GetURLMetadataResponse{
 		Title:       ogMetadata.title,
 		Description: ogMetadata.description,
 		Image:       ogMetadata.image,

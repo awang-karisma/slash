@@ -48,8 +48,8 @@ service ShortcutService {
     option (google.api.http) = {get: "/api/v1/shortcuts/{id}/analytics"};
     option (google.api.method_signature) = "id";
   }
-  // GetUrlMetadata fetches social metadata from a URL.
-  rpc GetUrlMetadata(GetUrlMetadataRequest) returns (GetUrlMetadataResponse) {
+  // GetURLMetadata fetches social metadata from a URL.
+  rpc GetURLMetadata(GetURLMetadataRequest) returns (GetURLMetadataResponse) {
     option (google.api.http) = {
       post: "/api/v1/shortcuts:fetchMetadata"
       body: "*"
@@ -136,11 +136,11 @@ message GetShortcutAnalyticsResponse {
   }
 }
 
-message GetUrlMetadataRequest {
+message GetURLMetadataRequest {
   string url = 1;
 }
 
-message GetUrlMetadataResponse {
+message GetURLMetadataResponse {
   string title = 1;
   string description = 2;
   string image = 3;
